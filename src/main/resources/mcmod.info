@@ -1,0 +1,16 @@
+[
+{
+  "modid": "projectx",
+  "name": "ProjectX 2",
+  "description": "XyCraft inspired technology mod.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://github.com/KitsuneAlex/ProjectX",
+  "updateUrl": "",
+  "authorList": ["KitsuneAlex"],
+  "credits": "Adam for helping me with the multiblock stuff.",
+  "logoFile": "assets/projectx/logo.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]
