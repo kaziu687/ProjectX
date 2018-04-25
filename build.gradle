@@ -1,45 +1,54 @@
 buildscript {
     repositories {
-        mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+version = "1.12.2-2.2.0"
+group = "de.kitsunealex.projectx"
+archivesBaseName = "ProjectX"
+
+sourceCompatibility = targetCompatibility = '1.8'
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
+
+minecraft {
+    version = "1.12.2-14.23.3.2655"
+    runDir = "run"
+    mappings = "snapshot_20171003"
 }
 
 repositories {
-    maven {
-        name = "CodeChickenLib Maven"
-        url = "http://files.minecraftforge.net/maven"
-    }
-}
-
-apply plugin: "scala"
-apply plugin: 'forge'
-
-version = "1.7.10-0.0.1"
-group= "de.kitsunealex.projectx"
-archivesBaseName = "ProjectX"
-
-minecraft {
-    version = "1.7.10-10.13.4.1614-1.7.10"
-    runDir = "eclipse"
+	maven { url = "http://chickenbones.net/maven" }
+	maven { url = "http://dvs1.progwml6.com/files/maven" }
+	maven { url = "http://tehnut.info/maven" }
+	maven { url = "http://maven.tterrag.com" }
+	maven { url = "http://maven.covers1624.net" }
 }
 
 dependencies {
-    compile "codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev"
+	deobfCompile "codechicken:CodeChickenLib:1.12.2-3.1.7.340:deobf"
+	deobfCompile "mezz.jei:jei_1.12.2:4.9.1.169:api"
+	deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12:api"
+	deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.22-13:api"
+	deobfCompile "cofh:RedstoneFlux:1.12-2.0.1.2:deobf"
+	runtime "mezz.jei:jei_1.12.2:4.9.1.169"
+	runtime "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12"
+	runtime "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.22-13"
+	runtime "cofh:CoFHCore:1.12.2-4.4.0.9"
+	runtime "cofh:CoFHWorld:1.12.2-1.1.1.2"
+	runtime "cofh:ThermalFoundation:1.12.2-2.4.0.14"
+	runtime "cofh:ThermalExpansion:1.12.2-5.4.0.20"
 }
 
-processResources
-{
+processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
