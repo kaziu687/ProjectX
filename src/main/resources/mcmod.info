@@ -1,15 +1,15 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "projectx",
+  "name": "ProjectX 2",
+  "description": "XyCraft inspired technology mod. §lThe §7XyCraft clone™",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "http://twitter.com/KitsuneAlexx",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
-  "logoFile": "",
+  "authorList": ["KitsuneAlex"],
+  "credits": "Adam for helping me with the multiblock code <3",
+  "logoFile": "assets/projectx/logo.png",
   "screenshots": [],
   "dependencies": []
 }

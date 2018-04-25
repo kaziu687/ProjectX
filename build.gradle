@@ -37,15 +37,9 @@ dependencies {
 	deobfCompile "codechicken:CodeChickenLib:1.12.2-3.1.7.340:deobf"
 	deobfCompile "mezz.jei:jei_1.12.2:4.9.1.169:api"
 	deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12:api"
-	deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.22-13:api"
 	deobfCompile "cofh:RedstoneFlux:1.12-2.0.1.2:deobf"
 	runtime "mezz.jei:jei_1.12.2:4.9.1.169"
-	runtime "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12"
-	runtime "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.22-13"
-	runtime "cofh:CoFHCore:1.12.2-4.4.0.9"
-	runtime "cofh:CoFHWorld:1.12.2-1.1.1.2"
-	runtime "cofh:ThermalFoundation:1.12.2-2.4.0.14"
-	runtime "cofh:ThermalExpansion:1.12.2-5.4.0.20"
+    runtime "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12"
 }
 
 processResources {
