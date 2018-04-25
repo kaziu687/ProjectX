@@ -1,4 +1,4 @@
-package de.kitsunealex.projectx.api.block;
+package de.kitsunealex.projectx.client;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

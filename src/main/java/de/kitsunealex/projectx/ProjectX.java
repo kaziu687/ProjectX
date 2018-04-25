@@ -1,11 +1,16 @@
 package de.kitsunealex.projectx;
 
 import de.kitsunealex.projectx.proxy.CommonProxy;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Logger;
 
 import static de.kitsunealex.projectx.util.Constants.*;
@@ -18,6 +23,14 @@ public class ProjectX {
     @SidedProxy(clientSide = CSIDE, serverSide = SSIDE)
     public static CommonProxy PROXY;
     public static Logger LOGGER;
+
+    public static CreativeTabs CREATIVE_TAB = new CreativeTabs("projectx.name") {
+        @Override
+        @SideOnly(Side.CLIENT)
+        public ItemStack getTabIconItem() {
+            return new ItemStack(Items.APPLE, 1, 0);
+        }
+    };
 
     @Mod.EventHandler
     public void handlePreInit(FMLPreInitializationEvent event) {
