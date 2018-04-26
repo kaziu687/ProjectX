@@ -3,11 +3,14 @@ package de.kitsunealex.projectx.client.render;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.Vertex5;
 import com.google.common.collect.Lists;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
@@ -56,17 +59,20 @@ public class ConnectedRenderContext {
             new Vector3(0D, 0.5D, 0.5D),
             new Vector3(0.5D, 0.5D, 0D)
     };
+    private IBlockAccess world;
+    private IBlockState matchState;
     private boolean changeBounds = false;
     private Vector3 offset = Vector3.zero;
-    private List<Vertex5> vertices = Lists.newArrayList();
 
-    private void renderSide(Vector3 pos, TextureAtlasSprite[] textures, EnumFacing side) {
+    @Nonnull
+    private List<Vertex5> renderSide(@Nonnull Vector3 pos, @Nonnull TextureAtlasSprite[] textures, @Nonnull EnumFacing side) {
         byte[] bitmask = new byte[4];
         boolean areSame = true;
         Vector3 posO = POSITIONS_O[side.getIndex()].copy().multiply(2D).subtract(1D);
         Vector3 posA = POSITIONS_A[side.getIndex()];
         Vector3 posB = POSITIONS_B[side.getIndex()];
         Vector3 posR = POSITIONS_R[side.getIndex()];
+        List<Vertex5> vertices = Lists.newArrayList();
 
         for(int i = 0; i < 4; i++) {
             bitmask[i] = getType(new Vector3[]{pos, posA.copy().multiply(U[i]), posB.copy().multiply(V[i]), posO}, side);
@@ -91,7 +97,7 @@ public class ConnectedRenderContext {
                 vertices.add(new Vertex5(new Vector3(cx, cy, cz).add(offset), u, v));
             }
 
-            return;
+            return vertices;
         }
 
         for(int i = 0; i < 4; i++) {
@@ -112,6 +118,8 @@ public class ConnectedRenderContext {
                 vertices.add(new Vertex5(x, y, z, u, v));
             }
         }
+
+        return vertices;
     }
 
     private byte getType(Vector3[] positions, EnumFacing side) {
@@ -149,8 +157,26 @@ public class ConnectedRenderContext {
     }
 
     private boolean matchBlock(Vector3 pos) {
-        //TODO: mlem
-        return false;
+        return world.getBlockState(pos.pos()) == matchState;
+    }
+
+    public void setWorld(@Nonnull IBlockAccess world) {
+        this.world = world;
+    }
+
+    public void setMatchState(@Nonnull IBlockState state) {
+        matchState = state;
+    }
+
+    public void reset() {
+        world = null;
+        matchState = null;
+        offset = Vector3.zero;
+    }
+
+    @Nonnull
+    public Vector3 getOffset() {
+        return offset;
     }
 
     public static ConnectedRenderContext getInstance() {

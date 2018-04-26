@@ -1,20 +1,24 @@
 package de.kitsunealex.projectx.block;
 
+import de.kitsunealex.projectx.api.client.ICTMBlock;
 import de.kitsunealex.projectx.api.client.Textures;
 import de.kitsunealex.projectx.api.color.EnumXycroniumColor;
 import de.kitsunealex.projectx.util.Constants;
 import de.kitsunealex.projectx.util.ISubtypeHolder;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockXycroniumStorage extends BlockAnimationHandler implements ISubtypeHolder {
+public class BlockXycroniumStorage extends BlockAnimationHandler implements ISubtypeHolder, ICTMBlock {
 
     @SideOnly(Side.CLIENT)
-    private TextureAtlasSprite texture;
+    private TextureAtlasSprite[] texture;
 
     public BlockXycroniumStorage() {
         super("xycronium_block", Material.ROCK);
@@ -30,14 +34,14 @@ public class BlockXycroniumStorage extends BlockAnimationHandler implements ISub
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap map) {
-        String path = String.format("blocks/%s", blockName);
-        texture = map.registerSprite(new ResourceLocation(Constants.MODID, path));
+        String path = String.format("blocks/%s/%s", blockName, blockName);
+        texture = registerConnectedTexture(map, new ResourceLocation(Constants.MODID, path));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getTexture(int meta, int side) {
-        return texture;
+        return texture[3];
     }
 
     @Override
@@ -56,6 +60,18 @@ public class BlockXycroniumStorage extends BlockAnimationHandler implements ISub
     @SideOnly(Side.CLIENT)
     public int getAnimationBrightness(int meta, int side) {
         return 0x00F000F0;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean canTextureConnect(IBlockAccess world, BlockPos pos, IBlockState state, int side) {
+        return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite[] getConnectedTexture(IBlockAccess world, BlockPos pos, IBlockState state, int side) {
+        return texture;
     }
 
 }
