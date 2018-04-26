@@ -79,7 +79,7 @@ public class RenderDefaultBlockGlow implements ICCBlockRenderer, IItemRenderer {
                         renderState.baseColour = colorProvider.getColorMultiplier(world, pos, state, side);
                     }
 
-                    MODEL.render(renderState, new IconTransformation(texture));
+                    MODEL.render(renderState, side * 4, side * 4 + 4, new IconTransformation(texture));
                 }
 
                 parentBuffer.finishDrawing();
@@ -148,7 +148,7 @@ public class RenderDefaultBlockGlow implements ICCBlockRenderer, IItemRenderer {
                 renderState.baseColour = colorProvider.getColorMultiplier(stack.getMetadata(), side);
             }
 
-            MODEL.render(renderState, new IconTransformation(texture));
+            MODEL.render(renderState, side * 4, side * 4 + 4, new IconTransformation(texture));
         }
 
         Tessellator.getInstance().draw();

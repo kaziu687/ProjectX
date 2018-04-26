@@ -65,7 +65,7 @@ public class ConnectedRenderContext {
     private Vector3 offset = Vector3.zero;
 
     @Nonnull
-    private List<Vertex5> renderSide(@Nonnull Vector3 pos, @Nonnull TextureAtlasSprite[] textures, @Nonnull EnumFacing side) {
+    public List<Vertex5> renderSide(@Nonnull Vector3 pos, @Nonnull TextureAtlasSprite[] textures, @Nonnull EnumFacing side) {
         byte[] bitmask = new byte[4];
         boolean areSame = true;
         Vector3 posO = POSITIONS_O[side.getIndex()].copy().multiply(2D).subtract(1D);

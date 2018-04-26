@@ -9,9 +9,11 @@ import codechicken.lib.util.TransformUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
+import codechicken.lib.vec.Vertex5;
 import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import de.kitsunealex.projectx.api.client.ICTMBlock;
 import de.kitsunealex.projectx.api.client.IColorProvider;
 import de.kitsunealex.projectx.api.client.ITextureProvider;
 import de.kitsunealex.projectx.util.ModelUtils;
@@ -27,6 +29,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.model.IModelState;
@@ -47,31 +50,64 @@ public class RenderDefaultBlock implements ICCBlockRenderer, IItemRenderer {
     @Override
     public boolean renderBlock(IBlockAccess world, BlockPos pos, IBlockState state, BufferBuilder buffer) {
         String cacheKey = RenderUtils.getStateKey(state);
+        ITextureProvider provider = (ITextureProvider)state.getBlock();
+        CCRenderState renderState = CCRenderState.instance();
+        BakingVertexBuffer parentBuffer = BakingVertexBuffer.create();
 
-        if(MODEL_CACHE.getIfPresent(cacheKey) == null) {
-            ITextureProvider provider = (ITextureProvider)state.getBlock();
-            CCRenderState renderState = CCRenderState.instance();
-            BakingVertexBuffer parentBuffer = BakingVertexBuffer.create();
+        if(state.getBlock() instanceof ICTMBlock) {
+            ICTMBlock block = (ICTMBlock)state.getBlock();
+            ConnectedRenderContext context = ConnectedRenderContext.getInstance();
             renderState.reset();
             parentBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
             renderState.bind(parentBuffer);
+            context.reset();
+            context.setWorld(world);
+            context.setMatchState(state);
 
             for(int side = 0; side < 6; side++) {
-                TextureAtlasSprite texture = provider.getTexture(world, pos, state, side);
+                if(state.shouldSideBeRendered(world, pos, EnumFacing.getFront(side))) {
+                    TextureAtlasSprite[] textures = block.getConnectedTexture(world, pos, state, side);
+                    List<Vertex5> vertices = context.renderSide(Vector3.fromBlockPos(pos), textures, EnumFacing.getFront(side));
+                    CCModel sideModel = CCModel.newModel(GL11.GL_QUADS, vertices.size());
+                    sideModel.verts = vertices.toArray(new Vertex5[vertices.size()]);
 
-                if(state.getBlock() instanceof IColorProvider) {
-                    IColorProvider colorProvider = (IColorProvider)state.getBlock();
-                    renderState.baseColour = colorProvider.getColorMultiplier(world, pos, state, side);
+                    if(state.getBlock() instanceof IColorProvider) {
+                        IColorProvider colorProvider = (IColorProvider)state.getBlock();
+                        renderState.baseColour = colorProvider.getColorMultiplier(world, pos, state, side);
+                    }
+
+                    sideModel.computeNormals().render(renderState);
                 }
-
-                MODEL.render(renderState, new IconTransformation(texture));
             }
 
             parentBuffer.finishDrawing();
-            MODEL_CACHE.put(cacheKey, parentBuffer.bake());
+            return RenderUtils.renderQuads(parentBuffer.bake(), world, pos, state, buffer);
         }
+        else {
+            if(MODEL_CACHE.getIfPresent(cacheKey) == null) {
+                renderState.reset();
+                parentBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+                renderState.bind(parentBuffer);
 
-        return RenderUtils.renderQuads(MODEL_CACHE.getIfPresent(cacheKey), world, pos, state, buffer);
+                for(int side = 0; side < 6; side++) {
+                    if(state.shouldSideBeRendered(world, pos, EnumFacing.getFront(side))) {
+                        TextureAtlasSprite texture = provider.getTexture(world, pos, state, side);
+
+                        if(state.getBlock() instanceof IColorProvider) {
+                            IColorProvider colorProvider = (IColorProvider)state.getBlock();
+                            renderState.baseColour = colorProvider.getColorMultiplier(world, pos, state, side);
+                        }
+
+                        MODEL.render(renderState, side * 4, side * 4 + 4, new IconTransformation(texture));
+                    }
+                }
+
+                parentBuffer.finishDrawing();
+                MODEL_CACHE.put(cacheKey, parentBuffer.bake());
+            }
+
+            return RenderUtils.renderQuads(MODEL_CACHE.getIfPresent(cacheKey), world, pos, state, buffer);
+        }
     }
 
     @Override
@@ -106,7 +142,7 @@ public class RenderDefaultBlock implements ICCBlockRenderer, IItemRenderer {
             if(block instanceof IColorProvider) {
                 IColorProvider colorProvider = (IColorProvider)block;
                 renderState.baseColour = colorProvider.getColorMultiplier(stack.getMetadata(), side);
-                MODEL.render(renderState, new IconTransformation(texture));
+                MODEL.render(renderState, side * 4, side * 4 + 4, new IconTransformation(texture));
             }
         }
 

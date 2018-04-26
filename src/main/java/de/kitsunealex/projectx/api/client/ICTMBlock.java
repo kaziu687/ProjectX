@@ -12,9 +12,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface ICTMBlock {
 
     @SideOnly(Side.CLIENT)
-    boolean canTextureConnect(IBlockAccess world, BlockPos pos, IBlockState state, int side);
-
-    @SideOnly(Side.CLIENT)
     TextureAtlasSprite[] getConnectedTexture(IBlockAccess world, BlockPos pos, IBlockState state, int side);
 
     @SideOnly(Side.CLIENT)
