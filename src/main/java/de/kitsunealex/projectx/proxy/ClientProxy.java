@@ -5,6 +5,8 @@ import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.texture.TextureUtils;
 import de.kitsunealex.projectx.api.client.RenderTypes;
+import de.kitsunealex.projectx.api.client.Textures;
+import de.kitsunealex.projectx.client.AnimatedTexture;
 import de.kitsunealex.projectx.client.IItemRenderProvider;
 import de.kitsunealex.projectx.client.render.RenderDefaultBlock;
 import de.kitsunealex.projectx.client.render.RenderDefaultBlockGlow;
@@ -25,6 +27,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void handlePreInit(FMLPreInitializationEvent event) {
         super.handlePreInit(event);
+        Textures.ANIMATION = new AnimatedTexture(32).texture;
         RenderTypes.DEFAULT_BLOCK = getNextAvailableType();
         BlockRenderingRegistry.registerRenderer(RenderTypes.DEFAULT_BLOCK, RenderDefaultBlock.INSTANCE);
         RenderTypes.DEFAULT_BLOCK_GLOW = getNextAvailableType();

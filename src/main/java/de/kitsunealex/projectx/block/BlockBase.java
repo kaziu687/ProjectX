@@ -41,7 +41,7 @@ public class BlockBase<T extends TileEntity> extends Block implements ITileEntit
     public static final PropertyInteger METADATA = new PropertyInteger("meta", 15);
     protected String blockName;
     @SideOnly(Side.CLIENT)
-    protected TextureAtlasSprite[] texture;
+    private TextureAtlasSprite[] texture;
 
     public BlockBase(String blockName, Material material) {
         this(blockName, material, material.getMaterialMapColor(), ItemBlockBase.class);

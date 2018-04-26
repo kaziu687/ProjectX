@@ -12,6 +12,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockXycroniumOre extends BlockAnimationHandler implements ISubtypeHolder {
 
+    @SideOnly(Side.CLIENT)
+    private TextureAtlasSprite[] texture;
+
     public BlockXycroniumOre() {
         super("xycronium_ore", Material.ROCK);
         setHardness(1.6F);
@@ -35,6 +38,12 @@ public class BlockXycroniumOre extends BlockAnimationHandler implements ISubtype
 
         String path = String.format("blocks/%s/%s_effect", blockName, blockName);
         texture[getSubNames().length] = map.registerSprite(new ResourceLocation(Constants.MODID, path));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getTexture(int meta, int side) {
+        return texture[meta];
     }
 
     @Override
