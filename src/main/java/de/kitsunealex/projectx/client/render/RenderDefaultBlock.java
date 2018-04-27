@@ -9,7 +9,6 @@ import codechicken.lib.util.TransformUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
-import codechicken.lib.vec.Vertex5;
 import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -64,20 +63,8 @@ public class RenderDefaultBlock implements ICCBlockRenderer, IItemRenderer {
             context.setWorld(world);
             context.setMatchState(state);
 
-            for(int side = 0; side < 6; side++) {
-                if(state.shouldSideBeRendered(world, pos, EnumFacing.getFront(side))) {
-                    TextureAtlasSprite[] textures = block.getConnectedTexture(world, pos, state, side);
-                    List<Vertex5> vertices = context.renderSide(Vector3.fromBlockPos(pos), textures, EnumFacing.getFront(side));
-                    CCModel sideModel = CCModel.newModel(GL11.GL_QUADS, vertices.size());
-                    sideModel.verts = vertices.toArray(new Vertex5[vertices.size()]);
+            for(EnumFacing side : EnumFacing.VALUES) {
 
-                    if(state.getBlock() instanceof IColorProvider) {
-                        IColorProvider colorProvider = (IColorProvider)state.getBlock();
-                        renderState.baseColour = colorProvider.getColorMultiplier(world, pos, state, side);
-                    }
-
-                    sideModel.computeNormals().render(renderState);
-                }
             }
 
             parentBuffer.finishDrawing();
@@ -89,16 +76,16 @@ public class RenderDefaultBlock implements ICCBlockRenderer, IItemRenderer {
                 parentBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
                 renderState.bind(parentBuffer);
 
-                for(int side = 0; side < 6; side++) {
-                    if(state.shouldSideBeRendered(world, pos, EnumFacing.getFront(side))) {
-                        TextureAtlasSprite texture = provider.getTexture(world, pos, state, side);
+                for(EnumFacing side : EnumFacing.VALUES) {
+                    if(state.shouldSideBeRendered(world, pos, side)) {
+                        TextureAtlasSprite texture = provider.getTexture(world, pos, state, side.getIndex());
 
                         if(state.getBlock() instanceof IColorProvider) {
                             IColorProvider colorProvider = (IColorProvider)state.getBlock();
-                            renderState.baseColour = colorProvider.getColorMultiplier(world, pos, state, side);
+                            renderState.baseColour = colorProvider.getColorMultiplier(world, pos, state, side.getIndex());
                         }
 
-                        MODEL.render(renderState, side * 4, side * 4 + 4, new IconTransformation(texture));
+                        MODEL.render(renderState, side.getIndex() * 4, side.getIndex() * 4 + 4, new IconTransformation(texture));
                     }
                 }
 
