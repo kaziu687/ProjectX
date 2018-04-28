@@ -73,3 +73,69 @@ processResources {
         exclude 'mcmod.info'
     }
 }
+
+jar {
+    classifier = 'universal'
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
+task srcJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+    archives deobfJar
+    archives srcJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            if (project.hasProperty("local_maven")) {
+                repository(url: "file://${local_maven}")
+                pom {
+                    groupId = project.group
+                    artifactId = project.archivesBaseName
+                    project {
+                        name project.archivesBaseName
+                        packaging 'jar'
+                        description 'ProjectX'
+                        url 'https://github.com/KitsuneAlex/ProjectX'
+
+                        scm {
+                            url 'https://github.com/KitsuneAlex/ProjectX'
+                            connection 'scm:git:git://github.com/KitsuneAlex/ProjectX.git'
+                            developerConnection 'scm:git:git@github.com:KitsuneAlex/ProjectX.git'
+                        }
+
+                        issueManagement {
+                            system 'github'
+                            url 'https://github.com/KitsuneAlex/ProjectX/issues'
+                        }
+
+                        licenses {
+                            license {
+                                name 'GNU Lesser Public License (GPL), Version 2.1'
+                                url 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt'
+                                distribution 'repo'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id 'KitsuneAlex'
+                                name 'KitsuneAlex'
+                                roles { role 'developer' }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
