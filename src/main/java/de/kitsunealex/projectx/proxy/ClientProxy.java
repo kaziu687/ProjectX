@@ -1,20 +1,36 @@
+/*
+ * This file is part of ProjectX.
+ * Copyright (c) 2015 - 2018, KitsuneAlex, All rights reserved.
+ *
+ * ProjectX is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ProjectX is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
+
 package de.kitsunealex.projectx.proxy;
 
 import codechicken.lib.model.DummyBakedModel;
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.render.block.BlockRenderingRegistry;
+import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.texture.TextureUtils;
-import de.kitsunealex.projectx.api.client.RenderTypes;
-import de.kitsunealex.projectx.api.client.Textures;
 import de.kitsunealex.projectx.client.AnimatedTexture;
 import de.kitsunealex.projectx.client.IItemRenderProvider;
-import de.kitsunealex.projectx.client.render.RenderDefaultBlock;
-import de.kitsunealex.projectx.client.render.RenderDefaultBlockGlow;
+import de.kitsunealex.projectx.network.ClientPacketHandler;
+import de.kitsunealex.projectx.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.Item;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -22,22 +38,18 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ClientProxy extends CommonProxy {
 
-    private static int renderID = 0;
+    private TextureAtlasSprite animation;
 
     @Override
     public void handlePreInit(FMLPreInitializationEvent event) {
         super.handlePreInit(event);
-        Textures.ANIMATION = new AnimatedTexture(32).texture;
-        RenderTypes.DEFAULT_BLOCK = getNextAvailableType();
-        BlockRenderingRegistry.registerRenderer(RenderTypes.DEFAULT_BLOCK, RenderDefaultBlock.INSTANCE);
-        RenderTypes.DEFAULT_BLOCK_GLOW = getNextAvailableType();
-        BlockRenderingRegistry.registerRenderer(RenderTypes.DEFAULT_BLOCK_GLOW, RenderDefaultBlockGlow.INSTANCE);
-        RenderTypes.BEVELED_BLOCK_GLOW = getNextAvailableType();
+        animation = new AnimatedTexture(32).texture;
     }
 
     @Override
     public void handleInit(FMLInitializationEvent event) {
         super.handleInit(event);
+        PacketCustom.assignHandler(Constants.MODID, new ClientPacketHandler());
     }
 
     @Override
@@ -73,8 +85,9 @@ public class ClientProxy extends CommonProxy {
         super.registerItemRenderer(item);
     }
 
-    private EnumBlockRenderType getNextAvailableType() {
-        return BlockRenderingRegistry.createRenderType(String.format("brh_%d", renderID++));
+    @Override
+    public TextureAtlasSprite getAnimation() {
+        return animation;
     }
 
 }

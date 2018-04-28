@@ -1,12 +1,29 @@
+/*
+ * This file is part of ProjectX.
+ * Copyright (c) 2015 - 2018, KitsuneAlex, All rights reserved.
+ *
+ * ProjectX is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ProjectX is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
+
 package de.kitsunealex.projectx.block;
 
 import codechicken.lib.block.property.PropertyInteger;
 import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.texture.TextureUtils;
 import de.kitsunealex.projectx.ProjectX;
-import de.kitsunealex.projectx.api.client.ITextureProvider;
-import de.kitsunealex.projectx.api.client.RenderTypes;
 import de.kitsunealex.projectx.client.IItemRenderProvider;
+import de.kitsunealex.projectx.client.ITextureProvider;
 import de.kitsunealex.projectx.client.render.RenderDefaultBlock;
 import de.kitsunealex.projectx.item.ItemBlockBase;
 import de.kitsunealex.projectx.util.Constants;
@@ -115,17 +132,15 @@ public class BlockBase<T extends TileEntity> extends Block implements ITileEntit
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if(tab == getCreativeTabToDisplayOn()) {
-            if(this instanceof ISubtypeHolder) {
-                String[] subNames = ((ISubtypeHolder)this).getSubNames();
+        if(this instanceof ISubtypeHolder) {
+            String[] subNames = ((ISubtypeHolder)this).getSubNames();
 
-                for(int i = 0; i < subNames.length; i++) {
-                    items.add(new ItemStack(this, 1, i));
-                }
+            for(int i = 0; i < subNames.length; i++) {
+                items.add(new ItemStack(this, 1, i));
             }
-            else {
-                items.add(new ItemStack(this, 1, 0));
-            }
+        }
+        else {
+            items.add(new ItemStack(this, 1, 0));
         }
     }
 
@@ -158,7 +173,7 @@ public class BlockBase<T extends TileEntity> extends Block implements ITileEntit
     @Override
     @SideOnly(Side.CLIENT)
     public EnumBlockRenderType getRenderType(IBlockState state) {
-        return RenderTypes.DEFAULT_BLOCK;
+        return RenderDefaultBlock.RENDER_TYPE;
     }
 
     @Override

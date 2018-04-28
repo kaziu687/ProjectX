@@ -16,26 +16,28 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.util;
+package de.kitsunealex.projectx.client;
 
-import codechicken.lib.render.CCModel;
-import codechicken.lib.vec.Transformation;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
+public interface IColorProvider {
 
-@SideOnly(Side.CLIENT)
-public class ModelUtils {
+    @SideOnly(Side.CLIENT)
+    int getColorMultiplier(int meta, int side);
 
-    public static CCModel[] copyAndTransform(CCModel[] model, Transformation... transformations) {
-        return Arrays.stream(model).map(m -> copyAndTransform(m, transformations)).toArray(CCModel[]::new);
+    @SideOnly(Side.CLIENT)
+    default int getColorMultiplier(ItemStack stack, int side) {
+        return getColorMultiplier(stack.getMetadata(), side);
     }
 
-    public static CCModel copyAndTransform(CCModel model, Transformation... transformations) {
-        CCModel newModel = model.copy();
-        Arrays.stream(transformations).forEach(newModel::apply);
-        return newModel;
+    @SideOnly(Side.CLIENT)
+    default int getColorMultiplier(IBlockAccess world, BlockPos pos, IBlockState state, int side) {
+        return getColorMultiplier(state.getBlock().getMetaFromState(state), side);
     }
 
 }

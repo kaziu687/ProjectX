@@ -1,7 +1,7 @@
 Grayscale colors:
 -> 1st = (H:0,S:0,V:11)
--> 2nd = (H:0,S:0,V:31)
+-> 2nd = (H:0,S:0,V:26)
 -> 3rd = (H:0,S:0,V:44)
 
 Noise standards
--> Blocks = (I:17,F:0,A:100)
+-> Blocks = (I:18,F:0,A:100)

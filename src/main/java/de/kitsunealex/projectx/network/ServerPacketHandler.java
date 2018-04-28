@@ -16,15 +16,18 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.client;
+package de.kitsunealex.projectx.network;
 
-import codechicken.lib.render.item.IItemRenderer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import codechicken.lib.packet.ICustomPacketHandler;
+import codechicken.lib.packet.PacketCustom;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.play.INetHandlerPlayServer;
 
-public interface IItemRenderProvider {
+public class ServerPacketHandler implements ICustomPacketHandler.IServerPacketHandler {
 
-    @SideOnly(Side.CLIENT)
-    IItemRenderer getItemRenderer();
+    @Override
+    public void handlePacket(PacketCustom packet, EntityPlayerMP sender, INetHandlerPlayServer handler) {
+
+    }
 
 }

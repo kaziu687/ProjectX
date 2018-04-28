@@ -16,26 +16,29 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.util;
+package de.kitsunealex.projectx.client;
 
-import codechicken.lib.render.CCModel;
-import codechicken.lib.vec.Transformation;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
+public interface ITextureProvider {
 
-@SideOnly(Side.CLIENT)
-public class ModelUtils {
+    @SideOnly(Side.CLIENT)
+    TextureAtlasSprite getTexture(int meta, int side);
 
-    public static CCModel[] copyAndTransform(CCModel[] model, Transformation... transformations) {
-        return Arrays.stream(model).map(m -> copyAndTransform(m, transformations)).toArray(CCModel[]::new);
+    @SideOnly(Side.CLIENT)
+    default TextureAtlasSprite getTexture(ItemStack stack, int side) {
+        return getTexture(stack.getMetadata(), side);
     }
 
-    public static CCModel copyAndTransform(CCModel model, Transformation... transformations) {
-        CCModel newModel = model.copy();
-        Arrays.stream(transformations).forEach(newModel::apply);
-        return newModel;
+    @SideOnly(Side.CLIENT)
+    default TextureAtlasSprite getTexture(IBlockAccess world, BlockPos pos, IBlockState state, int side) {
+        return getTexture(state.getBlock().getMetaFromState(state), side);
     }
 
 }

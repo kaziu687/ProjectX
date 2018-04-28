@@ -16,15 +16,33 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.client;
+package de.kitsunealex.projectx.tile;
 
-import codechicken.lib.render.item.IItemRenderer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.nbt.NBTTagCompound;
 
-public interface IItemRenderProvider {
+public class TileEntityXycroniumLamp extends TileEntityBase {
 
-    @SideOnly(Side.CLIENT)
-    IItemRenderer getItemRenderer();
+    private int color = 0xFFFFFFFF;
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        color = compound.getInteger("color");
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setInteger("color", color);
+        return compound;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public int getColor() {
+        return color;
+    }
 
 }
