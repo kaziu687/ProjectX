@@ -16,7 +16,7 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.client.render;
+package de.kitsunealex.projectx.client.render.block;
 
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;

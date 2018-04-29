@@ -16,23 +16,24 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.client;
+package de.kitsunealex.projectx.api.power;
 
-import codechicken.lib.render.item.IItemRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.math.BlockPos;
 
-import java.util.function.Function;
+public interface IConnection {
 
-public interface IItemRenderProvider {
+    BlockPos getSourcePos();
 
-    @SideOnly(Side.CLIENT)
-    IItemRenderer getItemRenderer();
+    BlockPos getTargetPos();
 
-    @SideOnly(Side.CLIENT)
-    default Function<ItemStack, String> getRenderKey() {
-        return stack -> String.format("%s:%s", stack.getItem().getRegistryName().toString(), stack.getMetadata());
-    }
+    EnumPowerClass getSourcePowerClass();
+
+    EnumPowerClass getTargetPowerClass();
+
+    void onConnected();
+
+    void onDisconntected();
+
+    void onPowerSent();
 
 }

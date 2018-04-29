@@ -16,23 +16,17 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.client;
+package de.kitsunealex.projectx.util;
 
-import codechicken.lib.render.item.IItemRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.function.Function;
+import java.util.List;
 
-public interface IItemRenderProvider {
-
-    @SideOnly(Side.CLIENT)
-    IItemRenderer getItemRenderer();
+public interface IShiftDescription {
 
     @SideOnly(Side.CLIENT)
-    default Function<ItemStack, String> getRenderKey() {
-        return stack -> String.format("%s:%s", stack.getItem().getRegistryName().toString(), stack.getMetadata());
-    }
+    boolean addDescription(ItemStack stack, List<String> lines, boolean isShiftDown);
 
 }

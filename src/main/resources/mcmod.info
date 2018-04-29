@@ -2,7 +2,7 @@
 {
   "modid": "projectx",
   "name": "ProjectX 2",
-  "description": "XyCraft inspired technology mod. §lThe §7XyCraft clone™",
+  "description": "XyCraft inspired technology mod. §lThe §rXyCraft clone™",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "http://twitter.com/KitsuneAlexx",

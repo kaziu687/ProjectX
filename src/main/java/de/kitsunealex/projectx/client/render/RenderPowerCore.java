@@ -16,23 +16,18 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.client;
+package de.kitsunealex.projectx.client.render;
 
-import codechicken.lib.render.item.IItemRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.function.Function;
+@SideOnly(Side.CLIENT)
+public class RenderPowerCore {
 
-public interface IItemRenderProvider {
+    private static final ThreadLocal<RenderPowerCore> INSTANCES = ThreadLocal.withInitial(RenderPowerCore::new);
 
-    @SideOnly(Side.CLIENT)
-    IItemRenderer getItemRenderer();
-
-    @SideOnly(Side.CLIENT)
-    default Function<ItemStack, String> getRenderKey() {
-        return stack -> String.format("%s:%s", stack.getItem().getRegistryName().toString(), stack.getMetadata());
+    public static RenderPowerCore getInstance() {
+        return INSTANCES.get();
     }
 
 }

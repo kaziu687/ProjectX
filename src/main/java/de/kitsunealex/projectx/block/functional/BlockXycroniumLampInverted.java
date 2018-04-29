@@ -16,23 +16,29 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.client;
+package de.kitsunealex.projectx.block.functional;
 
-import codechicken.lib.render.item.IItemRenderer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.function.Function;
+public class BlockXycroniumLampInverted extends BlockXycroniumLamp {
 
-public interface IItemRenderProvider {
+    public BlockXycroniumLampInverted() {
+        super("xycronium_lamp_inverted");
+    }
 
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return getMetaFromState(state) == 1 ? 0 : 255;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
-    IItemRenderer getItemRenderer();
-
-    @SideOnly(Side.CLIENT)
-    default Function<ItemStack, String> getRenderKey() {
-        return stack -> String.format("%s:%s", stack.getItem().getRegistryName().toString(), stack.getMetadata());
+    public int getAnimationBrightness(int meta, int side) {
+        return meta == 1 ? 120 : 220;
     }
 
 }

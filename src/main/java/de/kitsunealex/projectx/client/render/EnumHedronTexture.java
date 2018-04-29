@@ -16,23 +16,30 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.client;
+package de.kitsunealex.projectx.client.render;
 
-import codechicken.lib.render.item.IItemRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import de.kitsunealex.projectx.util.Constants;
+import net.minecraft.util.ResourceLocation;
 
-import java.util.function.Function;
+public enum EnumHedronTexture {
 
-public interface IItemRenderProvider {
+    FILL    ("fill", new ResourceLocation(Constants.MODID, "textures/models/t_icosa_fill.png")),
+    SPACE   ("space", new ResourceLocation(Constants.MODID, "textures/models/t_icosa_space.png"));
 
-    @SideOnly(Side.CLIENT)
-    IItemRenderer getItemRenderer();
+    private String name;
+    private ResourceLocation texture;
 
-    @SideOnly(Side.CLIENT)
-    default Function<ItemStack, String> getRenderKey() {
-        return stack -> String.format("%s:%s", stack.getItem().getRegistryName().toString(), stack.getMetadata());
+    EnumHedronTexture(String name, ResourceLocation texture) {
+        this.name = name;
+        this.texture = texture;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ResourceLocation getTexture() {
+        return texture;
     }
 
 }

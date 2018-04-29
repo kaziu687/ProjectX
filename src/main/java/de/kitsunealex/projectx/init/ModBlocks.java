@@ -22,6 +22,7 @@ import de.kitsunealex.projectx.block.BlockXycroniumOre;
 import de.kitsunealex.projectx.block.BlockXycroniumStorage;
 import de.kitsunealex.projectx.block.decorative.*;
 import de.kitsunealex.projectx.block.functional.BlockXycroniumLamp;
+import de.kitsunealex.projectx.block.functional.BlockXycroniumLampInverted;
 import de.kitsunealex.projectx.tile.TileEntityXycroniumLamp;
 import de.kitsunealex.projectx.util.Constants;
 import net.minecraft.block.Block;
@@ -51,8 +52,8 @@ public class ModBlocks {
         XYCRONIUM_PLATFORM = new BlockXycroniumPlatform();
         XYCRONIUM_STRUCTURE = new BlockXycroniumStructure();
         XYCRONIUM_SHIELD = new BlockXycroniumShield();
-        XYCRONIUM_LAMP = new BlockXycroniumLamp(false);
-        XYCRONIUM_LAMP_INVERTED = new BlockXycroniumLamp(true);
+        XYCRONIUM_LAMP = new BlockXycroniumLamp();
+        XYCRONIUM_LAMP_INVERTED = new BlockXycroniumLampInverted();
     }
 
     public static void registerTileEntities() {

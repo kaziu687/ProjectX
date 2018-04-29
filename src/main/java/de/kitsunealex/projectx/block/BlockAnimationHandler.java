@@ -20,7 +20,7 @@ package de.kitsunealex.projectx.block;
 
 import codechicken.lib.render.item.IItemRenderer;
 import de.kitsunealex.projectx.client.IAnimationHandler;
-import de.kitsunealex.projectx.client.render.RenderDefaultBlockGlow;
+import de.kitsunealex.projectx.client.render.block.RenderDefaultBlockGlow;
 import de.kitsunealex.projectx.util.Constants;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;

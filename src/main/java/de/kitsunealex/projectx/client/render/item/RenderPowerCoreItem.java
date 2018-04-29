@@ -16,23 +16,39 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.client;
+package de.kitsunealex.projectx.client.render.item;
 
 import codechicken.lib.render.item.IItemRenderer;
+import codechicken.lib.util.TransformUtils;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.function.Function;
+@SideOnly(Side.CLIENT)
+public class RenderPowerCoreItem implements IItemRenderer {
 
-public interface IItemRenderProvider {
+    public static final RenderPowerCoreItem INSTANCE = new RenderPowerCoreItem();
 
-    @SideOnly(Side.CLIENT)
-    IItemRenderer getItemRenderer();
+    @Override
+    public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType transformType) {
 
-    @SideOnly(Side.CLIENT)
-    default Function<ItemStack, String> getRenderKey() {
-        return stack -> String.format("%s:%s", stack.getItem().getRegistryName().toString(), stack.getMetadata());
+    }
+
+    @Override
+    public IModelState getTransforms() {
+        return TransformUtils.DEFAULT_ITEM;
+    }
+
+    @Override
+    public boolean isAmbientOcclusion() {
+        return false;
+    }
+
+    @Override
+    public boolean isGui3d() {
+        return false;
     }
 
 }

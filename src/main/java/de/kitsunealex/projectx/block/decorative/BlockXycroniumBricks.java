@@ -58,7 +58,7 @@ public class BlockXycroniumBricks extends BlockAnimationHandler implements ISubt
     @Override
     @SideOnly(Side.CLIENT)
     public int getAnimationBrightness(int meta, int side) {
-        return 0x00F000F0;
+        return 220;
     }
 
     @Override

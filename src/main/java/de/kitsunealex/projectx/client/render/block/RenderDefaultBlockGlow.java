@@ -16,7 +16,7 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.client.render;
+package de.kitsunealex.projectx.client.render.block;
 
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
@@ -31,7 +31,7 @@ import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import de.kitsunealex.projectx.client.ICTMBlock;
+import de.kitsunealex.projectx.client.IAnimationHandler;
 import de.kitsunealex.projectx.client.IColorProvider;
 import de.kitsunealex.projectx.client.ITextureProvider;
 import de.kitsunealex.projectx.util.ModelUtils;
@@ -40,6 +40,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -47,88 +48,87 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.model.IModelState;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@SideOnly(Side.CLIENT)
-public class RenderDefaultBlock implements ICCBlockRenderer, IItemRenderer {
+public class RenderDefaultBlockGlow implements ICCBlockRenderer, IItemRenderer {
 
-    public static final RenderDefaultBlock INSTANCE = new RenderDefaultBlock();
+    public static final RenderDefaultBlockGlow INSTANCE = new RenderDefaultBlockGlow();
     public static EnumBlockRenderType RENDER_TYPE;
     private static CCModel MODEL = CCModel.quadModel(24).generateBlock(0, new Cuboid6(0D, 0D, 0D, 1D, 1D, 1D)).computeNormals();
     private static Cache<String, List<BakedQuad>> MODEL_CACHE = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build();
 
     static {
-        RENDER_TYPE = BlockRenderingRegistry.createRenderType("default_block");
+        RENDER_TYPE = BlockRenderingRegistry.createRenderType("default_block_glow");
         BlockRenderingRegistry.registerRenderer(RENDER_TYPE, INSTANCE);
     }
 
     @Override
     public boolean renderBlock(IBlockAccess world, BlockPos pos, IBlockState state, BufferBuilder buffer) {
-        ITextureProvider provider = (ITextureProvider)state.getBlock();
         CCRenderState renderState = CCRenderState.instance();
-        BakingVertexBuffer parentBuffer = BakingVertexBuffer.create();
+        BakingVertexBuffer bakingBuffer = BakingVertexBuffer.create();
+        BlockRenderLayer layer = MinecraftForgeClient.getRenderLayer();
 
-        if(state.getBlock() instanceof ICTMBlock) {
-            ICTMBlock block = (ICTMBlock)state.getBlock();
-            ConnectedRenderContext context = ConnectedRenderContext.getInstance();
+        if(layer == BlockRenderLayer.SOLID) {
+            return renderAnimation(world, pos, state, buffer, renderState);
+        }
+        else if(layer == BlockRenderLayer.CUTOUT) {
+            return renderOverlay(world, pos, state, buffer, bakingBuffer, renderState);
+        }
+
+        return false;
+    }
+
+    private boolean renderAnimation(IBlockAccess world, BlockPos pos, IBlockState state, BufferBuilder buffer, CCRenderState renderState) {
+        IAnimationHandler handler = (IAnimationHandler)state.getBlock();
+        CCModel model = ModelUtils.copyAndTransform(MODEL, new Translation(Vector3.fromBlockPos(pos)));
+        renderState.reset();
+        renderState.bind(buffer);
+
+        for(EnumFacing side : EnumFacing.VALUES) {
+            TextureAtlasSprite texture = handler.getAnimationTexture(world, pos, state, side.getIndex());
+            renderState.baseColour = handler.getAnimationColor(world, pos, state, side.getIndex());
+            renderState.brightness = handler.getAnimationBrightness(world, pos, state, side.getIndex());
+            model.render(renderState, side.getIndex() * 4, side.getIndex() * 4 + 4, new IconTransformation(texture));
+        }
+
+        return false;
+    }
+
+    private boolean renderOverlay(IBlockAccess world, BlockPos pos, IBlockState state, BufferBuilder buffer, BakingVertexBuffer bakingBuffer, CCRenderState renderState) {
+        ITextureProvider provider = (ITextureProvider)state.getBlock();
+        String cacheKey = RenderUtils.getStateKey(state);
+
+        if(MODEL_CACHE.getIfPresent(cacheKey) == null) {
+            bakingBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
             renderState.reset();
-            parentBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-            renderState.bind(parentBuffer);
-            context.reset();
-            context.setWorld(world);
-            context.setMatchState(state);
+            renderState.bind(bakingBuffer);
 
-            for(EnumFacing side : EnumFacing.VALUES) {
-                if(state.shouldSideBeRendered(world, pos, side)) {
-                    TextureAtlasSprite[] textures = block.getConnectedTexture(world, pos, state, side.getIndex());
+            for(int side = 0; side < 6; side++) {
+                TextureAtlasSprite texture = provider.getTexture(world, pos, state, side);
 
-                    if(state.getBlock() instanceof IColorProvider) {
-                        IColorProvider colorProvider = (IColorProvider)state.getBlock();
-                        renderState.baseColour = colorProvider.getColorMultiplier(world, pos, state, side.getIndex());
-                    }
-
-                    context.getSideModel(Vector3.fromBlockPos(pos), textures, side).render(renderState);
-                }
-            }
-
-            parentBuffer.finishDrawing();
-            return RenderUtils.renderQuads(parentBuffer.bake(), world, pos, state, buffer);
-        }
-        else {
-            String cacheKey = RenderUtils.getStateKey(state);
-
-            if(MODEL_CACHE.getIfPresent(cacheKey) == null) {
-                renderState.reset();
-                parentBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-                renderState.bind(parentBuffer);
-
-                for(EnumFacing side : EnumFacing.VALUES) {
-                    TextureAtlasSprite texture = provider.getTexture(world, pos, state, side.getIndex());
-
-                    if(state.getBlock() instanceof IColorProvider) {
-                        IColorProvider colorProvider = (IColorProvider)state.getBlock();
-                        renderState.baseColour = colorProvider.getColorMultiplier(world, pos, state, side.getIndex());
-                    }
-
-                    MODEL.render(renderState, side.getIndex() * 4, side.getIndex() * 4 + 4, new IconTransformation(texture));
+                if(state.getBlock() instanceof IColorProvider) {
+                    IColorProvider colorProvider = (IColorProvider)state.getBlock();
+                    renderState.baseColour = colorProvider.getColorMultiplier(world, pos, state, side);
                 }
 
-                parentBuffer.finishDrawing();
-                MODEL_CACHE.put(cacheKey, parentBuffer.bake());
+                MODEL.render(renderState, side * 4, side * 4 + 4, new IconTransformation(texture));
             }
 
-            return RenderUtils.renderQuads(MODEL_CACHE.getIfPresent(cacheKey), world, pos, state, buffer);
+            bakingBuffer.finishDrawing();
+            MODEL_CACHE.put(cacheKey, bakingBuffer.bake());
         }
+
+        return RenderUtils.renderQuads(MODEL_CACHE.getIfPresent(cacheKey), world, pos, state, buffer);
     }
 
     @Override
@@ -150,19 +150,40 @@ public class RenderDefaultBlock implements ICCBlockRenderer, IItemRenderer {
     public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType transformType) {
         Block block = Block.getBlockFromItem(stack.getItem());
         ITextureProvider provider = (ITextureProvider)block;
+        IAnimationHandler handler = (IAnimationHandler)block;
         BufferBuilder buffer = Tessellator.getInstance().getBuffer();
         CCRenderState renderState = CCRenderState.instance();
+        int lb = (int)OpenGlHelper.lastBrightnessY << 16 | (int)OpenGlHelper.lastBrightnessX;
         GlStateManager.pushMatrix();
-        renderState.reset();
+        GlStateManager.disableLighting();
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+        renderState.reset();
         renderState.bind(buffer);
+
+        for(int side = 0; side < 6; side++) {
+            TextureAtlasSprite texture = handler.getAnimationTexture(stack, side);
+            renderState.baseColour = handler.getAnimationColor(stack, side);
+            renderState.brightness = handler.getAnimationBrightness(stack, side);
+            renderState.pushLightmap();
+            MODEL.render(renderState, side * 4, side * 4 + 4, new IconTransformation(texture));
+        }
+
+        Tessellator.getInstance().draw();
+        GlStateManager.enableLighting();
+        GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+        renderState.reset();
+        renderState.bind(buffer);
+        renderState.brightness = lb;
+        renderState.pushLightmap();
 
         for(int side = 0; side < 6; side++) {
             TextureAtlasSprite texture = provider.getTexture(stack, side);
 
             if(block instanceof IColorProvider) {
                 IColorProvider colorProvider = (IColorProvider)block;
-                renderState.baseColour = colorProvider.getColorMultiplier(stack.getMetadata(), side);
+                renderState.baseColour = colorProvider.getColorMultiplier(stack, side);
             }
 
             MODEL.render(renderState, side * 4, side * 4 + 4, new IconTransformation(texture));

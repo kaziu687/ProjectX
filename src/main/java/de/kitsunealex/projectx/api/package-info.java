@@ -16,23 +16,7 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.client;
+@API(owner = "projectx", provides = "projectx-api", apiVersion = "0.0.1")
+package de.kitsunealex.projectx.api;
 
-import codechicken.lib.render.item.IItemRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.function.Function;
-
-public interface IItemRenderProvider {
-
-    @SideOnly(Side.CLIENT)
-    IItemRenderer getItemRenderer();
-
-    @SideOnly(Side.CLIENT)
-    default Function<ItemStack, String> getRenderKey() {
-        return stack -> String.format("%s:%s", stack.getItem().getRegistryName().toString(), stack.getMetadata());
-    }
-
-}
+import net.minecraftforge.fml.common.API;

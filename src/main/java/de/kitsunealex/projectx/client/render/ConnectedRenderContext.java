@@ -129,12 +129,12 @@ public class ConnectedRenderContext {
 
         if(areSame) {
             for(int i = 0; i < 4; i++) {
-                double cx = posR.x + posO.x + U[i] * posA.x * 0.5D + V[i] * posB.x * 0.5D;
-                double cy = posR.y + posO.y + U[i] * posA.y * 0.5D + V[i] * posB.y * 0.5D;
-                double cz = posR.z + posO.z + U[i] * posA.z * 0.5D + V[i] * posB.z * 0.5D;
+                double x = posR.x + posO.x + U[i] * posA.x * 0.5D + V[i] * posB.x * 0.5D;
+                double y = posR.y + posO.y + U[i] * posA.y * 0.5D + V[i] * posB.y * 0.5D;
+                double z = posR.z + posO.z + U[i] * posA.z * 0.5D + V[i] * posB.z * 0.5D;
                 double u = textures[bitmask[0]].getInterpolatedU(16D - (8D + U[i] * 8D));
                 double v = textures[bitmask[0]].getInterpolatedV(16D - (8D + V[i] * 8D));
-                vertices.add(new Vertex5(new Vector3(cx, cy, cz)/*.add(sideOffset)*/, u, v));
+                vertices.add(new Vertex5(x, y, z, u, v));
             }
 
             return vertices;
@@ -146,9 +146,9 @@ public class ConnectedRenderContext {
             double cz = posR.z + posO.z + posA.z * U[i] / 4D + posB.z * V[i] / 4D;
 
             for(int j = 0; j < 4; j++) {
-                double x = cx + U[j] * posA.x * 0.25D + V[j] * posB.x * 0.25D /*+ sideOffset.x*/;
-                double y = cy + U[j] * posA.y * 0.25D + V[j] * posB.y * 0.25D /*+ sideOffset.y*/;
-                double z = cz + U[j] * posA.z * 0.25D + V[j] * posB.z * 0.25D /*+ sideOffset.z*/;
+                double x = cx + U[j] * posA.x * 0.25D + V[j] * posB.x * 0.25D;
+                double y = cy + U[j] * posA.y * 0.25D + V[j] * posB.y * 0.25D;
+                double z = cz + U[j] * posA.z * 0.25D + V[j] * posB.z * 0.25D;
                 double u = textures[bitmask[i]].getInterpolatedU(16D - (8D + U[i] * 4D + U[j] * 4D));
                 double v = textures[bitmask[i]].getInterpolatedV(16D - (8D + V[i] * 4D + V[j] * 4D));
                 vertices.add(new Vertex5(x, y, z, u, v));

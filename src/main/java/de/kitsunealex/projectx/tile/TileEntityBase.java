@@ -20,10 +20,38 @@ package de.kitsunealex.projectx.tile;
 
 import codechicken.lib.packet.PacketCustom;
 import de.kitsunealex.projectx.util.Constants;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
+import javax.annotation.Nullable;
+
 public class TileEntityBase extends TileEntity {
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Nullable
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 255, getUpdateTag());
+    }
+
+    @Override
+    public void handleUpdateTag(NBTTagCompound tag) {
+        readFromNBT(tag);
+        markDirty();
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+        readFromNBT(packet.getNbtCompound());
+        markDirty();
+    }
 
     public void sendUpdatePacket(boolean rerender) {
         if(world.isRemote) {
@@ -33,6 +61,14 @@ public class TileEntityBase extends TileEntity {
             packet.writeBoolean(rerender);
             packet.compress().sendToClients();
         }
+    }
+
+    @Override
+    public void markDirty() {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+        world.markBlockRangeForRenderUpdate(pos, pos);
+        super.markDirty();
     }
 
 }
