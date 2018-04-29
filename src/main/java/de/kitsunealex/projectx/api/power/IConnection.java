@@ -34,6 +34,6 @@ public interface IConnection {
 
     void onDisconntected();
 
-    void onPowerSent();
+    void onPowerTransfered();
 
 }

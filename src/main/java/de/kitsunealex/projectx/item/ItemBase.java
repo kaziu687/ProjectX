@@ -50,6 +50,7 @@ public class ItemBase extends Item implements TextureUtils.IIconRegister, ITextu
         setCreativeTab(ProjectX.CREATIVE_TAB);
         setHasSubtypes(this instanceof ISubtypeHolder);
         ForgeRegistries.ITEMS.register(this);
+        ProjectX.PROXY.registerItemRenderer(this);
     }
 
     @Override
@@ -70,6 +71,18 @@ public class ItemBase extends Item implements TextureUtils.IIconRegister, ITextu
             else {
                 items.add(new ItemStack(this, 1, 0));
             }
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getUnlocalizedName(ItemStack stack) {
+        if(this instanceof ISubtypeHolder) {
+            String[] subNames = ((ISubtypeHolder)this).getSubNames();
+            return String.format("%s.%s", getUnlocalizedName(), subNames[stack.getMetadata()]);
+        }
+        else {
+            return getUnlocalizedName();
         }
     }
 

@@ -43,7 +43,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void handlePreInit(FMLPreInitializationEvent event) {
         super.handlePreInit(event);
-        animation = new AnimatedTexture(32).texture;
+        animation = new AnimatedTexture(64).texture;
     }
 
     @Override
@@ -83,6 +83,17 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void registerItemRenderer(Item item) {
         super.registerItemRenderer(item);
+
+        if(item instanceof TextureUtils.IIconRegister) {
+            TextureUtils.addIconRegister((TextureUtils.IIconRegister)item);
+        }
+
+        if(item instanceof IItemRenderProvider) {
+            IItemRenderProvider provider = (IItemRenderProvider)item;
+            ModelResourceLocation location = new ModelResourceLocation(item.getRegistryName(), "inventory");
+            ModelLoader.setCustomMeshDefinition(item, stack -> location);
+            ModelRegistryHelper.registerItemRenderer(item, provider.getItemRenderer());
+        }
     }
 
     @Override

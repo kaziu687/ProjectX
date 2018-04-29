@@ -18,11 +18,13 @@
 
 package de.kitsunealex.projectx.client.render.item;
 
+import codechicken.lib.colour.ColourRGBA;
 import codechicken.lib.model.ItemQuadBakery;
 import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.util.TransformUtils;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import de.kitsunealex.projectx.client.IColorProvider;
 import de.kitsunealex.projectx.client.IItemRenderProvider;
 import de.kitsunealex.projectx.client.ITextureProvider;
 import de.kitsunealex.projectx.client.render.SimpleBakedModel;
@@ -68,6 +70,12 @@ public class RenderDefaultItem implements IItemRenderer {
         GlStateManager.pushMatrix();
         GlStateManager.translate(0.5D, 0.5D, 0.5D);
         IBakedModel model = MODEL_CACHE.getIfPresent(cacheKey);
+
+        if(stack.getItem() instanceof IColorProvider) {
+            IColorProvider provider = (IColorProvider)stack.getItem();
+            new ColourRGBA(provider.getColorMultiplier(stack, 0)).glColour();
+        }
+
         renderItem.renderItem(stack, model);
         GlStateManager.popMatrix();
     }

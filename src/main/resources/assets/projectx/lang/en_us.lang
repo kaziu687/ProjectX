@@ -119,6 +119,38 @@ tile.projectx.xycronium_shield.white.name=White Xycronium Shield
 tile.projectx.xycronium_lamp.name=Xycronium Lamp
 tile.projectx.xycronium_lamp_inverted.name=Inverted Xycronium Lamp
 
+############### Xycronium Crystals ###############
+
+item.projectx.xycronium_crystal.blue.name=Blue Xycronium Crystal
+item.projectx.xycronium_crystal.green.name=Green Xycronium Crystal
+item.projectx.xycronium_crystal.red.name=Red Xycronium Crystal
+item.projectx.xycronium_crystal.dark.name=Dark Xycronium Crystal
+item.projectx.xycronium_crystal.light.name=Light Xycronium Crystal
+
+############### Xycronium Ingots ###############
+
+item.projectx.xycronium_ingot.blue.name=Blue Xycronium Ingot
+item.projectx.xycronium_ingot.green.name=Green Xycronium Ingot
+item.projectx.xycronium_ingot.red.name=Red Xycronium Ingot
+item.projectx.xycronium_ingot.dark.name=Dark Xycronium Ingot
+item.projectx.xycronium_ingot.light.name=Light Xycronium Ingot
+
+############### Xycronium Dust ###############
+
+item.projectx.xycronium_dust.blue.name=Blue Pulverized Xycronium
+item.projectx.xycronium_dust.green.name=Green Pulverized Xycronium
+item.projectx.xycronium_dust.red.name=Red Pulverized Xycronium
+item.projectx.xycronium_dust.dark.name=Dark Pulverized Xycronium
+item.projectx.xycronium_dust.light.name=Light Pulverized Xycronium
+
+############### Xycronium Nuggets ###############
+
+item.projectx.xycronium_nugget.blue.name=Blue Xycronium Nugget
+item.projectx.xycronium_nugget.green.name=Green Xycronium Nugget
+item.projectx.xycronium_nugget.red.name=Red Xycronium Nugget
+item.projectx.xycronium_nugget.dark.name=Dark Xycronium Nugget
+item.projectx.xycronium_nugget.light.name=Light Xycronium Nugget
+
 ############### Tooltips ###############
 
 tooltip.projectx.hold_shift_1=Hold

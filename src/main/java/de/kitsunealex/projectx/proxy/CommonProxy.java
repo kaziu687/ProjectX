@@ -20,6 +20,7 @@ package de.kitsunealex.projectx.proxy;
 
 import codechicken.lib.packet.PacketCustom;
 import de.kitsunealex.projectx.init.ModBlocks;
+import de.kitsunealex.projectx.init.ModItems;
 import de.kitsunealex.projectx.network.ServerPacketHandler;
 import de.kitsunealex.projectx.util.Constants;
 import net.minecraft.block.Block;
@@ -33,6 +34,7 @@ public class CommonProxy {
 
     public void handlePreInit(FMLPreInitializationEvent event) {
         ModBlocks.registerBlocks();
+        ModItems.registerItems();
     }
 
     public void handleInit(FMLInitializationEvent event) {

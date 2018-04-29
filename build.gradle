@@ -54,6 +54,7 @@ repositories {
 
 dependencies {
 	deobfCompile "codechicken:CodeChickenLib:1.12.2-3.1.7.340:deobf"
+	deobfCompile "codechicken:ChickenASM:1.12-1.0.2.8"
 	deobfCompile "mezz.jei:jei_1.12.2:4.9.1.169:api"
 	deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12:api"
 	deobfCompile "cofh:RedstoneFlux:1.12-2.0.1.2:deobf"
