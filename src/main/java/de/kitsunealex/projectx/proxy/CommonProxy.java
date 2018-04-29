@@ -20,6 +20,7 @@ package de.kitsunealex.projectx.proxy;
 
 import codechicken.lib.packet.PacketCustom;
 import de.kitsunealex.projectx.init.ModBlocks;
+import de.kitsunealex.projectx.init.ModCrafting;
 import de.kitsunealex.projectx.init.ModItems;
 import de.kitsunealex.projectx.network.ServerPacketHandler;
 import de.kitsunealex.projectx.util.Constants;
@@ -39,6 +40,7 @@ public class CommonProxy {
 
     public void handleInit(FMLInitializationEvent event) {
         ModBlocks.registerTileEntities();
+        ModCrafting.registerRecipes();
         PacketCustom.assignHandler(Constants.MODID, new ServerPacketHandler());
     }
 
