@@ -137,7 +137,13 @@ public class RenderDefaultBlock implements ICCBlockRenderer, IItemRenderer {
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
-        ModelUtils.copyAndTransform(MODEL, new Translation(Vector3.fromBlockPos(pos))).render(renderState, new IconTransformation(texture));
+        CCModel model = ModelUtils.copyAndTransform(MODEL, new Translation(Vector3.fromBlockPos(pos)));
+
+        for(EnumFacing side : EnumFacing.VALUES) {
+            if(state.shouldSideBeRendered(world, pos, side)) {
+                model.render(renderState, side.getIndex() * 4, side.getIndex() * 4 + 4, new IconTransformation(texture));
+            }
+        }
     }
 
     @Override

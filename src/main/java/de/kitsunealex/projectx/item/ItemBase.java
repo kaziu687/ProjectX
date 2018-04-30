@@ -54,11 +54,6 @@ public class ItemBase extends Item implements TextureUtils.IIconRegister, ITextu
     }
 
     @Override
-    public int getMetadata(int damage) {
-        return this instanceof ISubtypeHolder ? damage : super.getMetadata(damage);
-    }
-
-    @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         if(tab == getCreativeTab()) {
             if(this instanceof ISubtypeHolder) {

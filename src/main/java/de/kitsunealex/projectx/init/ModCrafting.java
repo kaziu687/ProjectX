@@ -18,10 +18,12 @@
 
 package de.kitsunealex.projectx.init;
 
+import codechicken.lib.colour.EnumColour;
+import codechicken.lib.util.ItemNBTUtils;
 import de.kitsunealex.projectx.recipe.RecipeHandler;
 import de.kitsunealex.projectx.util.EnumXycroniumColor;
+import de.kitsunealex.projectx.util.StackUtils;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.commons.lang3.StringUtils;
@@ -87,10 +89,19 @@ public class ModCrafting {
         }
 
         for(int i = 0; i < 16; i++) {
+            int color = EnumColour.values()[i].rgba();
             addRecolorRecipe(new ItemStack(ModBlocks.XYCRONIUM_PLATE, 1, i));
             addRecolorRecipe(new ItemStack(ModBlocks.XYCRONIUM_PLATFORM, 1, i));
             addRecolorRecipe(new ItemStack(ModBlocks.XYCRONIUM_SHIELD, 1, i));
             addRecolorRecipe(new ItemStack(ModBlocks.XYCRONIUM_STRUCTURE, 1, i));
+            addNBTRecolorRecipe(StackUtils.makeStack(ModBlocks.XYCRONIUM_LAMP, 1, 0, compound -> compound.setInteger("color", color)));
+            addNBTRecolorRecipe(StackUtils.makeStack(ModBlocks.XYCRONIUM_LAMP_INVERTED, 1, 0, compound -> compound.setInteger("color", color)));
+
+            RecipeHandler.addShapelessRecipe(
+                    StackUtils.makeStack(ModBlocks.XYCRONIUM_LAMP_INVERTED, 1, 0, compound -> compound.setInteger("color", color)),
+                    StackUtils.makeStack(ModBlocks.XYCRONIUM_LAMP, 1, 0, compound -> compound.setInteger("color", color)),
+                    Blocks.REDSTONE_TORCH
+            );
         }
 
         RecipeHandler.addRecipe(new ItemStack(ModBlocks.GLASS_VIEWER, 1, 0),
@@ -105,7 +116,20 @@ public class ModCrafting {
             if(i != stack.getMetadata()) {
                 ItemStack output = stack.copy();
                 output.setItemDamage(i);
-                RecipeHandler.addShapelessRecipe(output, stack, new ItemStack(Items.DYE, 1, 15 - i));
+                RecipeHandler.addShapelessRecipe(output, stack, EnumColour.values()[i].getDyeOreName());
+            }
+        }
+    }
+
+    private static void addNBTRecolorRecipe(ItemStack stack) {
+        int color = ItemNBTUtils.hasKey(stack, "color") ? ItemNBTUtils.getInteger(stack, "color") : 0xFFFFFFFF;
+
+        for(int i = 0; i < 16; i++) {
+            int newColor = EnumColour.values()[i].rgba();
+
+            if(color != newColor) {
+                ItemStack output = StackUtils.makeStack(stack.getItem(), stack.getCount(), compound -> compound.setInteger("color", newColor));
+                RecipeHandler.addShapelessRecipe(output, stack, EnumColour.values()[i].getDyeOreName());
             }
         }
     }

@@ -29,7 +29,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven'
 
-version = "1.12.2-2.2.3"
+version = "1.12.2-2.2.4"
 group = "de.kitsunealex.projectx"
 archivesBaseName = "ProjectX"
 
@@ -44,6 +44,13 @@ minecraft {
     mappings = "snapshot_20171003"
 }
 
+configurations {
+    pack
+    compile {
+        extendsFrom pack
+    }
+}
+
 repositories {
 	maven { url = "http://chickenbones.net/maven" }
 	maven { url = "http://dvs1.progwml6.com/files/maven" }
@@ -54,7 +61,7 @@ repositories {
 
 dependencies {
 	deobfCompile "codechicken:CodeChickenLib:1.12.2-3.1.7.340:deobf"
-	deobfCompile "codechicken:ChickenASM:1.12-1.0.2.8"
+	pack "codechicken:ChickenASM:1.12-1.0.2.8"
 	deobfCompile "mezz.jei:jei_1.12.2:4.9.1.169:api"
 	deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12:api"
 	deobfCompile "cofh:RedstoneFlux:1.12-2.0.1.2:deobf"
@@ -76,13 +83,21 @@ processResources {
     }
 }
 
+def commonManifest = {
+    attributes 'ContainedDeps': "ChickenASM-1.12-1.0.2.8.jar"
+}
+
 jar {
     classifier = 'universal'
+    manifest commonManifest
+    from configurations.pack
 }
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'deobf'
+    manifest commonManifest
+    from configurations.pack
 }
 
 task srcJar(type: Jar) {

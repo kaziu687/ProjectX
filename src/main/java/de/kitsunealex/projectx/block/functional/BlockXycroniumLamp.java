@@ -26,6 +26,7 @@ import codechicken.lib.util.ItemUtils;
 import com.google.common.collect.Lists;
 import de.kitsunealex.projectx.ProjectX;
 import de.kitsunealex.projectx.block.BlockAnimationHandler;
+import de.kitsunealex.projectx.event.BlockEventHandler;
 import de.kitsunealex.projectx.tile.TileEntityXycroniumLamp;
 import de.kitsunealex.projectx.util.IShiftDescription;
 import net.minecraft.block.Block;
@@ -36,6 +37,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -58,12 +61,18 @@ public class BlockXycroniumLamp extends BlockAnimationHandler<TileEntityXycroniu
         super(blockName, Material.GLASS);
         setHardness(1.2F);
         setResistance(1.5F);
+        BlockEventHandler.INSTANCE.registerSneakBypass(this);
     }
 
     @Nullable
     @Override
     public TileEntityXycroniumLamp createNewTileEntity(World world, int meta) {
         return new TileEntityXycroniumLamp();
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        return false;
     }
 
     @Override

@@ -19,6 +19,7 @@
 package de.kitsunealex.projectx.proxy;
 
 import codechicken.lib.packet.PacketCustom;
+import de.kitsunealex.projectx.event.BlockEventHandler;
 import de.kitsunealex.projectx.init.*;
 import de.kitsunealex.projectx.network.ServerPacketHandler;
 import de.kitsunealex.projectx.recipe.RecipeHandler;
@@ -26,6 +27,7 @@ import de.kitsunealex.projectx.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -36,6 +38,7 @@ public class CommonProxy {
         ModConfig.loadConfig(event.getSuggestedConfigurationFile());
         ModBlocks.registerBlocks();
         ModItems.registerItems();
+        MinecraftForge.EVENT_BUS.register(BlockEventHandler.INSTANCE);
     }
 
     public void handleInit(FMLInitializationEvent event) {

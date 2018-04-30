@@ -72,10 +72,10 @@ public class ShapedRecipe implements ICustomRecipe {
                 Object nextParam = params[i + 1];
 
                 if(nextParam instanceof Item) {
-                    ingredientMap.put((Character)param, new ItemStack((Item)nextParam, 1, OreDictionary.WILDCARD_VALUE));
+                    ingredientMap.put((Character)param, new ItemStack((Item)nextParam, 1, 32767));
                 }
                 else if(nextParam instanceof Block) {
-                    ingredientMap.put((Character)param, new ItemStack((Block) nextParam, 1, OreDictionary.WILDCARD_VALUE));
+                    ingredientMap.put((Character)param, new ItemStack((Block)nextParam, 1, 32767));
                 }
                 else if(nextParam instanceof ItemStack) {
                     ingredientMap.put((Character)param, (ItemStack)nextParam);
@@ -105,6 +105,9 @@ public class ShapedRecipe implements ICustomRecipe {
                     else {
                         hasMissingIngredients = true;
                     }
+                }
+                else {
+                    ingredientList.add(Ingredient.EMPTY);
                 }
             }
         }

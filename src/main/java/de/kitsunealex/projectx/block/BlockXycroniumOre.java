@@ -18,13 +18,19 @@
 
 package de.kitsunealex.projectx.block;
 
+import de.kitsunealex.projectx.init.ModItems;
 import de.kitsunealex.projectx.util.Constants;
 import de.kitsunealex.projectx.util.EnumXycroniumColor;
 import de.kitsunealex.projectx.util.ISubtypeHolder;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -44,6 +50,11 @@ public class BlockXycroniumOre extends BlockAnimationHandler implements ISubtype
     @Override
     public String[] getSubNames() {
         return Arrays.stream(EnumXycroniumColor.values()).map(EnumXycroniumColor::getName).toArray(String[]::new);
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        drops.add(new ItemStack(ModItems.XYCRONIUM_CRYSTAL, 4 + fortune, getMetaFromState(state)));
     }
 
     @Override
