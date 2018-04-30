@@ -21,11 +21,14 @@ package de.kitsunealex.projectx.init;
 import de.kitsunealex.projectx.recipe.RecipeHandler;
 import de.kitsunealex.projectx.util.EnumXycroniumColor;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.commons.lang3.StringUtils;
 
 public class ModCrafting {
+
+    private static final int[] COLOR_META = {11, 13, 14, 15, 0};
 
     public static void registerRecipes() {
         for(int i = 0; i < 5; i++) {
@@ -53,12 +56,41 @@ public class ModCrafting {
                     "XXX", "XXX", "XXX",
                     'X', new ItemStack(ModItems.XYCRONIUM_NUGGET, 1, i)
             );
+            RecipeHandler.addRecipe(new ItemStack(ModBlocks.XYCRONIUM_PLATE, 4, COLOR_META[i]),
+                    "IXI", "XCX", "IXI",
+                    'I', String.format("ingotXycronium%s", color),
+                    'X', Blocks.STONEBRICK,
+                    'C', "ingotBrick"
+            );
+            RecipeHandler.addRecipe(new ItemStack(ModBlocks.XYCRONIUM_PLATFORM, 4, COLOR_META[i]),
+                    "IXI", "XCX", "IXI",
+                    'I', String.format("ingotXycronium%s", color),
+                    'X', "blockGlassColorless",
+                    'C', "ingotIron"
+            );
+            RecipeHandler.addRecipe(new ItemStack(ModBlocks.XYCRONIUM_SHIELD, 4, COLOR_META[i]),
+                    "IXI", "XIX", "IXI",
+                    'I', "ingotIron",
+                    'X', new ItemStack(ModBlocks.XYCRONIUM_PLATE, 1, COLOR_META[i])
+            );
+            RecipeHandler.addRecipe(new ItemStack(ModBlocks.XYCRONIUM_STRUCTURE, 4, COLOR_META[i]),
+                    "IXI", "XCX", "IXI",
+                    'I', String.format("crystalXycronium%s", color),
+                    'X', Blocks.STONEBRICK,
+                    'C', "ingotIron"
+            );
 
             RecipeHandler.addShapelessRecipe(new ItemStack(ModItems.XYCRONIUM_CRYSTAL, 9, i), new ItemStack(ModBlocks.XYCRONIUM_BLOCK, 1, i));
             RecipeHandler.addShapelessRecipe(new ItemStack(ModItems.XYCRONIUM_NUGGET, 9, i), new ItemStack(ModItems.XYCRONIUM_INGOT, 1, i));
-
             GameRegistry.addSmelting(new ItemStack(ModItems.XYCRONIUM_CRYSTAL, 1, i), new ItemStack(ModItems.XYCRONIUM_INGOT, 1, i), 0.25F);
             GameRegistry.addSmelting(new ItemStack(ModItems.XYCRONIUM_DUST, 1, i), new ItemStack(ModItems.XYCRONIUM_INGOT, 1, i), 0.25F);
+        }
+
+        for(int i = 0; i < 16; i++) {
+            addRecolorRecipe(new ItemStack(ModBlocks.XYCRONIUM_PLATE, 1, i));
+            addRecolorRecipe(new ItemStack(ModBlocks.XYCRONIUM_PLATFORM, 1, i));
+            addRecolorRecipe(new ItemStack(ModBlocks.XYCRONIUM_SHIELD, 1, i));
+            addRecolorRecipe(new ItemStack(ModBlocks.XYCRONIUM_STRUCTURE, 1, i));
         }
 
         RecipeHandler.addRecipe(new ItemStack(ModBlocks.GLASS_VIEWER, 1, 0),
@@ -66,6 +98,16 @@ public class ModCrafting {
                 'I', "ingotIron",
                 'X', "blockGlassColorless"
         );
+    }
+
+    private static void addRecolorRecipe(ItemStack stack) {
+        for(int i = 0; i < 16; i++) {
+            if(i != stack.getMetadata()) {
+                ItemStack output = stack.copy();
+                output.setItemDamage(i);
+                RecipeHandler.addShapelessRecipe(output, stack, new ItemStack(Items.DYE, 1, 15 - i));
+            }
+        }
     }
 
 }
