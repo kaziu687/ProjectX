@@ -18,10 +18,16 @@
 
 package de.kitsunealex.projectx.recipe;
 
-public class RecipeException extends RuntimeException {
+import net.minecraft.util.ResourceLocation;
 
-    public RecipeException(String message, Object... params) {
-        super(String.format(message, params));
-    }
+public interface ICustomRecipe {
+
+    void processIngredients();
+
+    void register(ResourceLocation registryName);
+
+    boolean hasMissingIngredients();
+
+    boolean isPatternDefined();
 
 }

@@ -22,7 +22,9 @@ import codechicken.lib.packet.PacketCustom;
 import de.kitsunealex.projectx.init.ModBlocks;
 import de.kitsunealex.projectx.init.ModCrafting;
 import de.kitsunealex.projectx.init.ModItems;
+import de.kitsunealex.projectx.init.ModOreDictionary;
 import de.kitsunealex.projectx.network.ServerPacketHandler;
+import de.kitsunealex.projectx.recipe.RecipeHandler;
 import de.kitsunealex.projectx.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -40,7 +42,9 @@ public class CommonProxy {
 
     public void handleInit(FMLInitializationEvent event) {
         ModBlocks.registerTileEntities();
+        ModOreDictionary.registerEntries();
         ModCrafting.registerRecipes();
+        RecipeHandler.registerRecipes();
         PacketCustom.assignHandler(Constants.MODID, new ServerPacketHandler());
     }
 

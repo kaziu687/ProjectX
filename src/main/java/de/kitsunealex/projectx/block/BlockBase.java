@@ -62,7 +62,7 @@ import java.util.List;
 
 public class BlockBase<T extends TileEntity> extends Block implements ITileEntityProvider, TextureUtils.IIconRegister, ITextureProvider, IItemRenderProvider {
 
-    public static final PropertyInteger METADATA = new PropertyInteger("meta", 15);
+    public static final PropertyInteger METADATA = new PropertyInteger("meta", 16);
     protected String blockName;
     @SideOnly(Side.CLIENT)
     private TextureAtlasSprite[] texture;
