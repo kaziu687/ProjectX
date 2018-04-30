@@ -19,10 +19,7 @@
 package de.kitsunealex.projectx.proxy;
 
 import codechicken.lib.packet.PacketCustom;
-import de.kitsunealex.projectx.init.ModBlocks;
-import de.kitsunealex.projectx.init.ModCrafting;
-import de.kitsunealex.projectx.init.ModItems;
-import de.kitsunealex.projectx.init.ModOreDictionary;
+import de.kitsunealex.projectx.init.*;
 import de.kitsunealex.projectx.network.ServerPacketHandler;
 import de.kitsunealex.projectx.recipe.RecipeHandler;
 import de.kitsunealex.projectx.util.Constants;
@@ -36,6 +33,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class CommonProxy {
 
     public void handlePreInit(FMLPreInitializationEvent event) {
+        ModConfig.loadConfig(event.getSuggestedConfigurationFile());
         ModBlocks.registerBlocks();
         ModItems.registerItems();
     }
@@ -45,6 +43,7 @@ public class CommonProxy {
         ModOreDictionary.registerEntries();
         ModCrafting.registerRecipes();
         RecipeHandler.registerRecipes();
+        ModWorldGen.registerWorldGen();
         PacketCustom.assignHandler(Constants.MODID, new ServerPacketHandler());
     }
 

@@ -24,6 +24,7 @@ import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.texture.TextureUtils;
 import de.kitsunealex.projectx.client.AnimatedTexture;
 import de.kitsunealex.projectx.client.IItemRenderProvider;
+import de.kitsunealex.projectx.init.ModConfig;
 import de.kitsunealex.projectx.network.ClientPacketHandler;
 import de.kitsunealex.projectx.util.Constants;
 import net.minecraft.block.Block;
@@ -43,7 +44,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void handlePreInit(FMLPreInitializationEvent event) {
         super.handlePreInit(event);
-        animation = new AnimatedTexture(64).texture;
+        animation = new AnimatedTexture(ModConfig.ANIMATION_RESOLUTION).texture;
     }
 
     @Override
