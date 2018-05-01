@@ -54,13 +54,11 @@ public class TileEntityBase extends TileEntity {
     }
 
     public void sendUpdatePacket(boolean rerender) {
-        if(world.isRemote) {
-            PacketCustom packet = new PacketCustom(Constants.MODID, 1);
-            packet.writePos(pos);
-            packet.writeNBTTagCompound(writeToNBT(new NBTTagCompound()));
-            packet.writeBoolean(rerender);
-            packet.compress().sendToClients();
-        }
+        PacketCustom packet = new PacketCustom(Constants.MODID, 1);
+        packet.writePos(pos);
+        packet.writeNBTTagCompound(writeToNBT(new NBTTagCompound()));
+        packet.writeBoolean(rerender);
+        packet.compress().sendToClients();
     }
 
     @Override

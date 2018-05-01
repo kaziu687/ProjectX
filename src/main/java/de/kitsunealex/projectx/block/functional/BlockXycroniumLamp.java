@@ -27,6 +27,7 @@ import com.google.common.collect.Lists;
 import de.kitsunealex.projectx.ProjectX;
 import de.kitsunealex.projectx.block.BlockAnimationHandler;
 import de.kitsunealex.projectx.event.BlockEventHandler;
+import de.kitsunealex.projectx.init.ModItems;
 import de.kitsunealex.projectx.tile.TileEntityXycroniumLamp;
 import de.kitsunealex.projectx.util.IShiftDescription;
 import net.minecraft.block.Block;
@@ -72,6 +73,56 @@ public class BlockXycroniumLamp extends BlockAnimationHandler<TileEntityXycroniu
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack stack = player.getHeldItem(hand);
+
+        if(world.getTileEntity(pos) != null && !stack.isEmpty()) {
+            TileEntityXycroniumLamp tile = (TileEntityXycroniumLamp)world.getTileEntity(pos);
+            int[] color = Colour.unpack(tile.getColor());
+
+            if(stack.getItem() == ModItems.XYCRONIUM_CRYSTAL) {
+                if(player.isSneaking()) {
+                    if(color[0] > 0 && stack.getMetadata() == 2) {
+                        color[0]--;
+                        tile.setColor(Colour.pack(color));
+                        tile.sendUpdatePacket(true);
+                        return true;
+                    }
+                    else if(color[1] > 0 && stack.getMetadata() == 1) {
+                        color[1]--;
+                        tile.setColor(Colour.pack(color));
+                        tile.sendUpdatePacket(true);
+                        return true;
+                    }
+                    else if(color[2] > 0 && stack.getMetadata() == 0) {
+                        color[2]--;
+                        tile.setColor(Colour.pack(color));
+                        tile.sendUpdatePacket(true);
+                        return true;
+                    }
+                }
+                else {
+                    if(color[0] < 255 && stack.getMetadata() == 2) {
+                        color[0]++;
+                        tile.setColor(Colour.pack(color));
+                        tile.sendUpdatePacket(true);
+                        return true;
+                    }
+                    else if(color[1] < 255 && stack.getMetadata() == 1) {
+                        color[1]++;
+                        tile.setColor(Colour.pack(color));
+                        tile.sendUpdatePacket(true);
+                        return true;
+                    }
+                    else if(color[2] < 255 && stack.getMetadata() == 0) {
+                        color[2]++;
+                        tile.setColor(Colour.pack(color));
+                        tile.sendUpdatePacket(true);
+                        return true;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 
