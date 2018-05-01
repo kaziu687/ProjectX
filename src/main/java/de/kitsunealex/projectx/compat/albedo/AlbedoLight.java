@@ -16,20 +16,41 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.util;
+package de.kitsunealex.projectx.compat.albedo;
 
-public class Constants {
+import codechicken.lib.colour.Colour;
+import codechicken.lib.vec.Vector3;
 
-    public static final String MODID = "projectx";
-    public static final String NAME = "ProjectX 2";
-    public static final String VERSION = "2.2.0";
-    public static final String DEPS = "required-after:codechickenlib" +
-            "required-after:redstoneflux" +
-            "after:hwyla" +
-            "after:jei" +
-            "after:albedo";
-    private static final String PROXY_PACKAGE = "de.kitsunealex.projectx.proxy";
-    public static final String CSIDE = PROXY_PACKAGE + ".ClientProxy";
-    public static final String SSIDE = PROXY_PACKAGE + ".ServerProxy";
+public class AlbedoLight {
+
+    private final Vector3 position;
+    private Colour color;
+    private float radius;
+
+    public AlbedoLight(Vector3 position, Colour color, float radius) {
+        this.position = position;
+        this.color = color;
+        this.radius = radius;
+    }
+
+    public void setColor(Colour color) {
+        this.color = color;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
+
+    public Vector3 getPosition() {
+        return position;
+    }
+
+    public Colour getColor() {
+        return color;
+    }
+
+    public float getRadius() {
+        return radius;
+    }
 
 }

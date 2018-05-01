@@ -16,20 +16,29 @@
  * along with ProjectX.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package de.kitsunealex.projectx.util;
+package de.kitsunealex.projectx.compat;
 
-public class Constants {
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-    public static final String MODID = "projectx";
-    public static final String NAME = "ProjectX 2";
-    public static final String VERSION = "2.2.0";
-    public static final String DEPS = "required-after:codechickenlib" +
-            "required-after:redstoneflux" +
-            "after:hwyla" +
-            "after:jei" +
-            "after:albedo";
-    private static final String PROXY_PACKAGE = "de.kitsunealex.projectx.proxy";
-    public static final String CSIDE = PROXY_PACKAGE + ".ClientProxy";
-    public static final String SSIDE = PROXY_PACKAGE + ".ServerProxy";
+public interface IModule {
+
+    boolean isEnabled();
+
+    String getDependencyModID();
+
+    String getName();
+
+    void handlePreInit(FMLPreInitializationEvent event);
+
+    void handleInit(FMLInitializationEvent event);
+
+    @SideOnly(Side.CLIENT)
+    void handlePreInitClient(FMLPreInitializationEvent event);
+
+    @SideOnly(Side.CLIENT)
+    void handleInitClient(FMLInitializationEvent event);
 
 }

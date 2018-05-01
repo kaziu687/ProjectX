@@ -57,6 +57,7 @@ repositories {
 	maven { url = "http://tehnut.info/maven" }
 	maven { url = "http://maven.tterrag.com" }
 	maven { url = "http://maven.covers1624.net" }
+    maven { url = "http://repo.elytradev.com" }
 }
 
 dependencies {
@@ -65,6 +66,7 @@ dependencies {
 	deobfCompile "mezz.jei:jei_1.12.2:4.9.1.169:api"
 	deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12:api"
 	deobfCompile "cofh:RedstoneFlux:1.12-2.0.1.2:deobf"
+    deobfCompile "elucent:albedo:2.0-SNAPSHOT"
 	runtime "mezz.jei:jei_1.12.2:4.9.1.169"
     runtime "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12"
 }

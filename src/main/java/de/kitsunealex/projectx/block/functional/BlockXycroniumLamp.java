@@ -23,9 +23,12 @@ import codechicken.lib.colour.ColourRGBA;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.util.ItemNBTUtils;
 import codechicken.lib.util.ItemUtils;
+import codechicken.lib.vec.Vector3;
 import com.google.common.collect.Lists;
 import de.kitsunealex.projectx.ProjectX;
 import de.kitsunealex.projectx.block.BlockAnimationHandler;
+import de.kitsunealex.projectx.compat.ModuleHandler;
+import de.kitsunealex.projectx.compat.albedo.AlbedoLightHandler;
 import de.kitsunealex.projectx.event.BlockEventHandler;
 import de.kitsunealex.projectx.init.ModItems;
 import de.kitsunealex.projectx.tile.TileEntityXycroniumLamp;
@@ -83,40 +86,88 @@ public class BlockXycroniumLamp extends BlockAnimationHandler<TileEntityXycroniu
                 if(player.isSneaking()) {
                     if(color[0] > 0 && stack.getMetadata() == 2) {
                         color[0]--;
-                        tile.setColor(Colour.pack(color));
-                        tile.sendUpdatePacket(true);
+
+                        if(!world.isRemote) {
+                            tile.setColor(Colour.pack(color));
+                            tile.sendUpdatePacket(true);
+
+                            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
+                                AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
+                            }
+                        }
+
                         return true;
                     }
                     else if(color[1] > 0 && stack.getMetadata() == 1) {
                         color[1]--;
-                        tile.setColor(Colour.pack(color));
-                        tile.sendUpdatePacket(true);
+
+                        if(!world.isRemote) {
+                            tile.setColor(Colour.pack(color));
+                            tile.sendUpdatePacket(true);
+
+                            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
+                                AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
+                            }
+                        }
+
                         return true;
                     }
                     else if(color[2] > 0 && stack.getMetadata() == 0) {
                         color[2]--;
-                        tile.setColor(Colour.pack(color));
-                        tile.sendUpdatePacket(true);
+
+                        if(!world.isRemote) {
+                            tile.setColor(Colour.pack(color));
+                            tile.sendUpdatePacket(true);
+
+                            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
+                                AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
+                            }
+                        }
+
                         return true;
                     }
                 }
                 else {
                     if(color[0] < 255 && stack.getMetadata() == 2) {
                         color[0]++;
-                        tile.setColor(Colour.pack(color));
-                        tile.sendUpdatePacket(true);
+
+                        if(!world.isRemote) {
+                            tile.setColor(Colour.pack(color));
+                            tile.sendUpdatePacket(true);
+
+                            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
+                                AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
+                            }
+                        }
+
                         return true;
                     }
                     else if(color[1] < 255 && stack.getMetadata() == 1) {
                         color[1]++;
-                        tile.setColor(Colour.pack(color));
-                        tile.sendUpdatePacket(true);
+
+                        if(!world.isRemote) {
+                            tile.setColor(Colour.pack(color));
+                            tile.sendUpdatePacket(true);
+
+                            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
+                                AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
+                            }
+                        }
+
                         return true;
                     }
                     else if(color[2] < 255 && stack.getMetadata() == 0) {
                         color[2]++;
-                        tile.setColor(Colour.pack(color));
-                        tile.sendUpdatePacket(true);
+
+                        if(!world.isRemote) {
+                            tile.setColor(Colour.pack(color));
+                            tile.sendUpdatePacket(true);
+
+                            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
+                                AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
+                            }
+                        }
+
                         return true;
                     }
                 }
@@ -128,11 +179,16 @@ public class BlockXycroniumLamp extends BlockAnimationHandler<TileEntityXycroniu
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        if(!world.isRemote) {
-            if(world.getTileEntity(pos) != null && ItemNBTUtils.hasKey(stack, "color")) {
-                TileEntityXycroniumLamp tile = (TileEntityXycroniumLamp)world.getTileEntity(pos);
+        if(world.getTileEntity(pos) != null && ItemNBTUtils.hasKey(stack, "color")) {
+            TileEntityXycroniumLamp tile = (TileEntityXycroniumLamp)world.getTileEntity(pos);
+
+            if(!world.isRemote) {
                 tile.setColor(ItemNBTUtils.getInteger(stack, "color"));
                 tile.sendUpdatePacket(true);
+
+                if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
+                    AlbedoLightHandler.INSTANCE.addLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 5F);
+                }
             }
         }
 
@@ -168,6 +224,10 @@ public class BlockXycroniumLamp extends BlockAnimationHandler<TileEntityXycroniu
             ItemStack stack = new ItemStack(this, 1, 0);
             ItemNBTUtils.setInteger(stack, "color", tile.getColor());
             ItemUtils.dropItem(world, pos, stack);
+
+            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
+                AlbedoLightHandler.INSTANCE.removeLight(Vector3.fromBlockPos(pos));
+            }
         }
     }
 
