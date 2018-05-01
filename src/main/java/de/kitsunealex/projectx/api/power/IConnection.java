@@ -19,6 +19,7 @@
 package de.kitsunealex.projectx.api.power;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public interface IConnection {
 
@@ -30,10 +31,10 @@ public interface IConnection {
 
     EnumPowerClass getTargetPowerClass();
 
-    void onConnected();
+    void onConnected(BlockPos pos, World world);
 
-    void onDisconntected();
+    void onDisconntected(BlockPos pos, World world);
 
-    void onPowerTransfered();
+    void onPowerTransfered(BlockPos pos, World world);
 
 }

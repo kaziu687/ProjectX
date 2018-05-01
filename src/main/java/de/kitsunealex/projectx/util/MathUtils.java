@@ -27,6 +27,9 @@ public class MathUtils {
 
     public static final Cuboid6 ZERO = new Cuboid6(0D, 0D, 0D, 0D, 0D, 0D);
     public static final Cuboid6 FULL = new Cuboid6(0D, 0D, 0D, 1D, 1D, 1D);
+    public static final Vector3 X = new Vector3(1D, 0D, 0D);
+    public static final Vector3 Y = new Vector3(0D, 1D, 0D);
+    public static final Vector3 Z = new Vector3(0D, 0D, 1D);
 
     public static Cuboid6[] divide(Cuboid6[] cuboids, double d) {
         return Arrays.stream(cuboids).map(c -> divide(c, d)).toArray(Cuboid6[]::new);

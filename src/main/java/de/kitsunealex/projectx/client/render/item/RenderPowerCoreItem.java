@@ -20,6 +20,10 @@ package de.kitsunealex.projectx.client.render.item;
 
 import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.util.TransformUtils;
+import codechicken.lib.vec.Vector3;
+import de.kitsunealex.projectx.api.power.EnumCoreType;
+import de.kitsunealex.projectx.api.power.EnumPowerClass;
+import de.kitsunealex.projectx.client.render.RenderPowerCore;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.model.IModelState;
@@ -33,7 +37,17 @@ public class RenderPowerCoreItem implements IItemRenderer {
 
     @Override
     public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType transformType) {
+        for(int i = 0; i < EnumCoreType.values().length; i++) {
+            EnumCoreType coreType = EnumCoreType.values()[i];
 
+            for(int j = 0; j < EnumPowerClass.values().length; j++) {
+                EnumPowerClass powerClass = EnumPowerClass.values()[j];
+
+                if(stack.getMetadata() == j + EnumPowerClass.values().length * i) {
+                    RenderPowerCore.getInstance().renderPowerCore(Vector3.center, powerClass, coreType);
+                }
+            }
+        }
     }
 
     @Override

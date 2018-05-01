@@ -29,7 +29,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven'
 
-version = "1.12.2-2.2.4"
+version = "1.12.2-2.2.5"
 group = "de.kitsunealex.projectx"
 archivesBaseName = "ProjectX"
 

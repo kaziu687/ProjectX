@@ -21,6 +21,7 @@ package de.kitsunealex.projectx.compat.waila;
 import de.kitsunealex.projectx.block.functional.BlockXycroniumLamp;
 import de.kitsunealex.projectx.block.functional.BlockXycroniumLampInverted;
 import de.kitsunealex.projectx.compat.IModule;
+import de.kitsunealex.projectx.init.ModConfig;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
@@ -30,7 +31,7 @@ public class ModuleWAILA implements IModule {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return ModConfig.COMPAT_WAILA;
     }
 
     @Override

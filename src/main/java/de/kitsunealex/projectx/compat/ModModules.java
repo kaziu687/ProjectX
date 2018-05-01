@@ -18,14 +18,16 @@
 
 package de.kitsunealex.projectx.compat;
 
+import de.kitsunealex.projectx.compat.albedo.ModuleAlbedo;
+import de.kitsunealex.projectx.compat.thaumcraft.ModuleThaumcraft;
 import de.kitsunealex.projectx.compat.waila.ModuleWAILA;
 
 public class ModModules {
 
     public static void registerModules() {
-        //Albedo is like really broken at the moment
-        //ModuleHandler.INSTANCE.registerModule(new ModuleAlbedo());
+        ModuleHandler.INSTANCE.registerModule(new ModuleAlbedo());
         ModuleHandler.INSTANCE.registerModule(new ModuleWAILA());
+        ModuleHandler.INSTANCE.registerModule(new ModuleThaumcraft());
     }
 
 }

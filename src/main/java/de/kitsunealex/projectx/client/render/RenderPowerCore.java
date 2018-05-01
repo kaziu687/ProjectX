@@ -18,6 +18,13 @@
 
 package de.kitsunealex.projectx.client.render;
 
+import codechicken.lib.colour.Colour;
+import codechicken.lib.util.ClientUtils;
+import codechicken.lib.vec.Vector3;
+import de.kitsunealex.projectx.api.power.EnumCoreType;
+import de.kitsunealex.projectx.api.power.EnumPowerClass;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -25,6 +32,34 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderPowerCore {
 
     private static final ThreadLocal<RenderPowerCore> INSTANCES = ThreadLocal.withInitial(RenderPowerCore::new);
+
+    public void renderPowerCore(Vector3 position, EnumPowerClass powerClass, EnumCoreType coreType) {
+        RenderTruncatedIcosahedron renderer = RenderTruncatedIcosahedron.getInstance();
+        Colour colorCore = powerClass.getColor();
+        Colour colorShell = coreType.getColor();
+        GlStateManager.pushMatrix();
+        position.translation().glApply();
+
+        if(!Minecraft.getMinecraft().isGamePaused()) {
+            GlStateManager.rotate((float)(-ClientUtils.getRenderTime() * 10F) * 0.5F, 0F, 1F, 0F);
+            GlStateManager.rotate((float)(-ClientUtils.getRenderTime() * 2.5F) * 0.5F, 0F, 0F, 1F);
+            GlStateManager.rotate((float)(-ClientUtils.getRenderTime() * -1F) * 0.5F, 1F, 0F, 0F);
+        }
+
+        renderer.render(0.85D, colorShell.copy().multiplyC(0.7D), colorShell, EnumHedronTexture.SPACE);
+        GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
+        position.translation().glApply();
+
+        if(!Minecraft.getMinecraft().isGamePaused()) {
+            GlStateManager.rotate((float)(ClientUtils.getRenderTime() * 10F) * 0.5F, 0F, 1F, 0F);
+            GlStateManager.rotate((float)(ClientUtils.getRenderTime() * 2.5F) * 0.5F, 0F, 0F, 1F);
+            GlStateManager.rotate((float)(ClientUtils.getRenderTime() * -1F) * 0.5F, 1F, 0F, 0F);
+        }
+
+        renderer.render(0.64D, colorCore.copy().multiplyC(0.7D), colorCore, EnumHedronTexture.FILL);
+        GlStateManager.popMatrix();
+    }
 
     public static RenderPowerCore getInstance() {
         return INSTANCES.get();

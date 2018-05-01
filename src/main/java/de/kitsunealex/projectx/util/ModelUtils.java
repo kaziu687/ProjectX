@@ -18,8 +18,12 @@
 
 package de.kitsunealex.projectx.util;
 
+import codechicken.lib.math.MathHelper;
 import codechicken.lib.render.CCModel;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Transformation;
+import codechicken.lib.vec.Vector3;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,6 +31,14 @@ import java.util.Arrays;
 
 @SideOnly(Side.CLIENT)
 public class ModelUtils {
+
+    public static void rotate(CCModel model, Vector3 axis, double angle, Vector3 origin) {
+        model.apply(new Rotation(angle * MathHelper.torad, axis).at(origin.copy().divide(16D)));
+    }
+
+    public static CCModel[] makeModel(Cuboid6[] bounds) {
+        return Arrays.stream(bounds).map(c -> CCModel.quadModel(24).generateBlock(0, c).computeNormals()).toArray(CCModel[]::new);
+    }
 
     public static CCModel[] copyAndTransform(CCModel[] model, Transformation... transformations) {
         return Arrays.stream(model).map(m -> copyAndTransform(m, transformations)).toArray(CCModel[]::new);

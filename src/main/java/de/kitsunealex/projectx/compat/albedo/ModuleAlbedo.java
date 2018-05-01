@@ -20,6 +20,7 @@ package de.kitsunealex.projectx.compat.albedo;
 
 import codechicken.lib.packet.PacketCustom;
 import de.kitsunealex.projectx.compat.IModule;
+import de.kitsunealex.projectx.init.ModConfig;
 import de.kitsunealex.projectx.util.Constants;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -33,7 +34,7 @@ public class ModuleAlbedo implements IModule {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return ModConfig.COMPAT_ALBEDO;
     }
 
     @Override

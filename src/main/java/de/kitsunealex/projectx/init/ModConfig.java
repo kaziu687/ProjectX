@@ -29,6 +29,7 @@ public class ModConfig {
     private static final String CATEGORY_GENERAL = "general";
     private static final String CATEGORY_CLIENT = "client";
     private static final String CATEGORY_WORLD = "world";
+    private static final String CATEGORY_COMPAT = "compat";
     private static final int[] DEFAULT_ORE_PARAMS = {3, 20, 52, 4, 8};
     public static boolean SUPPORTER_BADGES;
     public static int ANIMATION_RESOLUTION;
@@ -38,6 +39,9 @@ public class ModConfig {
     public static int[] ORE_RED_PARAMS;
     public static int[] ORE_DARK_PARAMS;
     public static int[] ORE_LIGHT_PARAMS;
+    public static boolean COMPAT_ALBEDO;
+    public static boolean COMPAT_WAILA;
+    public static boolean COMPAT_THAUMCRAFT;
 
     public static void loadConfig(File file) {
         Configuration config = new Configuration(file);
@@ -61,6 +65,10 @@ public class ModConfig {
         ORE_RED_PARAMS = config.get(CATEGORY_WORLD, "xycroniumOreRed", DEFAULT_ORE_PARAMS, "Chance, min height, max height, min vein size, max vein size").getIntList();
         ORE_DARK_PARAMS = config.get(CATEGORY_WORLD, "xycroniumOreDark", DEFAULT_ORE_PARAMS, "Chance, min height, max height, min vein size, max vein size").getIntList();
         ORE_LIGHT_PARAMS = config.get(CATEGORY_WORLD, "xycroniumOreLight", DEFAULT_ORE_PARAMS, "Chance, min height, max height, min vein size, max vein size").getIntList();
+
+        COMPAT_ALBEDO = config.get(CATEGORY_COMPAT, "albedo", true, "Enable/disable Albedo compat").getBoolean();
+        COMPAT_WAILA = config.get(CATEGORY_COMPAT, "waila", true, "Enable/disable WAILA compat").getBoolean();
+        COMPAT_THAUMCRAFT = config.get(CATEGORY_COMPAT, "thaumcraft", true, "Enable/disable Thaumcraft compat").getBoolean();
     }
 
 }

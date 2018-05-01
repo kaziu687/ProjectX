@@ -19,14 +19,14 @@
 package de.kitsunealex.projectx.api.power;
 
 import codechicken.lib.colour.Colour;
+import codechicken.lib.colour.ColourRGBA;
 
 import java.util.function.Predicate;
 
-public class EnumCoreType {
+public enum EnumCoreType {
 
-    //TODO: finish me!!!
-
-    ;
+    DIRECT("direct", new ColourRGBA(220, 220, 220, 255), connection -> true),
+    RADIAL("radial", new ColourRGBA(100, 100, 220, 255), connection -> true);
 
     private String name;
     private Colour color;
