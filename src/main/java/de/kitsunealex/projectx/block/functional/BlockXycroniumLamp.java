@@ -86,91 +86,36 @@ public class BlockXycroniumLamp extends BlockAnimationHandler<TileEntityXycroniu
                 if(player.isSneaking()) {
                     if(color[0] > 0 && stack.getMetadata() == 2) {
                         color[0]--;
-
-                        if(!world.isRemote) {
-                            tile.setColor(Colour.pack(color));
-                            tile.sendUpdatePacket(true);
-
-                            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
-                                AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
-                            }
-                        }
-
-                        return true;
                     }
                     else if(color[1] > 0 && stack.getMetadata() == 1) {
                         color[1]--;
-
-                        if(!world.isRemote) {
-                            tile.setColor(Colour.pack(color));
-                            tile.sendUpdatePacket(true);
-
-                            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
-                                AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
-                            }
-                        }
-
-                        return true;
                     }
                     else if(color[2] > 0 && stack.getMetadata() == 0) {
                         color[2]--;
-
-                        if(!world.isRemote) {
-                            tile.setColor(Colour.pack(color));
-                            tile.sendUpdatePacket(true);
-
-                            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
-                                AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
-                            }
-                        }
-
-                        return true;
                     }
                 }
                 else {
                     if(color[0] < 255 && stack.getMetadata() == 2) {
                         color[0]++;
-
-                        if(!world.isRemote) {
-                            tile.setColor(Colour.pack(color));
-                            tile.sendUpdatePacket(true);
-
-                            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
-                                AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
-                            }
-                        }
-
-                        return true;
                     }
                     else if(color[1] < 255 && stack.getMetadata() == 1) {
                         color[1]++;
-
-                        if(!world.isRemote) {
-                            tile.setColor(Colour.pack(color));
-                            tile.sendUpdatePacket(true);
-
-                            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
-                                AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
-                            }
-                        }
-
-                        return true;
                     }
                     else if(color[2] < 255 && stack.getMetadata() == 0) {
                         color[2]++;
-
-                        if(!world.isRemote) {
-                            tile.setColor(Colour.pack(color));
-                            tile.sendUpdatePacket(true);
-
-                            if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
-                                AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
-                            }
-                        }
-
-                        return true;
                     }
                 }
+
+                if(!world.isRemote) {
+                    tile.setColor(Colour.pack(color));
+                    tile.sendUpdatePacket(true);
+
+                    if(ModuleHandler.INSTANCE.isModuleEnabled("Albedo")) {
+                        AlbedoLightHandler.INSTANCE.changeLight(Vector3.fromBlockPos(pos), new ColourRGBA(tile.getColor()), 1.5F);
+                    }
+                }
+
+                return true;
             }
         }
 

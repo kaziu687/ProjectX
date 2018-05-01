@@ -47,7 +47,7 @@ public class ModConfig {
         addProperties(config);
         config.save();
         timer.stop();
-        ProjectX.LOGGER.info("Loaded config file in %lms!", timer.getTime());
+        ProjectX.LOGGER.info("Loaded config file in {}ms!", timer.getTime());
     }
 
     private static void addProperties(Configuration config) {

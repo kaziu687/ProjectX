@@ -90,18 +90,28 @@ public class ModCrafting {
 
         for(int i = 0; i < 16; i++) {
             int color = EnumColour.values()[i].rgba();
+
+            RecipeHandler.addRecipe(StackUtils.makeStack(ModBlocks.XYCRONIUM_LAMP, 1, 0, compound -> compound.setInteger("color", color)),
+                    "XRX", "GDG", "XRX",
+                    'X', ModItems.XYCRONIUM_INGOT,
+                    'R', "dustRedstone",
+                    'G', "dustGlowstone",
+                    'D', EnumColour.values()[i].getDyeOreName()
+            );
+            RecipeHandler.addRecipe(StackUtils.makeStack(ModBlocks.XYCRONIUM_LAMP_INVERTED, 1, 0, compound -> compound.setInteger("color", color)),
+                    "XRX", "GDG", "XRX",
+                    'X', ModItems.XYCRONIUM_INGOT,
+                    'R', Blocks.REDSTONE_TORCH,
+                    'G', "dustGlowstone",
+                    'D', EnumColour.values()[i].getDyeOreName()
+            );
+
             addRecolorRecipe(new ItemStack(ModBlocks.XYCRONIUM_PLATE, 1, i));
             addRecolorRecipe(new ItemStack(ModBlocks.XYCRONIUM_PLATFORM, 1, i));
             addRecolorRecipe(new ItemStack(ModBlocks.XYCRONIUM_SHIELD, 1, i));
             addRecolorRecipe(new ItemStack(ModBlocks.XYCRONIUM_STRUCTURE, 1, i));
             addNBTRecolorRecipe(StackUtils.makeStack(ModBlocks.XYCRONIUM_LAMP, 1, 0, compound -> compound.setInteger("color", color)));
             addNBTRecolorRecipe(StackUtils.makeStack(ModBlocks.XYCRONIUM_LAMP_INVERTED, 1, 0, compound -> compound.setInteger("color", color)));
-
-            RecipeHandler.addShapelessRecipe(
-                    StackUtils.makeStack(ModBlocks.XYCRONIUM_LAMP_INVERTED, 1, 0, compound -> compound.setInteger("color", color)),
-                    StackUtils.makeStack(ModBlocks.XYCRONIUM_LAMP, 1, 0, compound -> compound.setInteger("color", color)),
-                    Blocks.REDSTONE_TORCH
-            );
         }
 
         RecipeHandler.addRecipe(new ItemStack(ModBlocks.GLASS_VIEWER, 1, 0),

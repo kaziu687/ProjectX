@@ -18,9 +18,9 @@
 
 package de.kitsunealex.projectx;
 
+import de.kitsunealex.projectx.init.ModBlocks;
 import de.kitsunealex.projectx.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -46,7 +46,7 @@ public class ProjectX {
         @Override
         @SideOnly(Side.CLIENT)
         public ItemStack getTabIconItem() {
-            return new ItemStack(Items.APPLE, 1, 0);
+            return new ItemStack(ModBlocks.XYCRONIUM_BRICKS, 1, 0);
         }
     };
 

@@ -44,11 +44,11 @@ public class ModuleHandler {
         ENABLED_MODULES = MODULES.stream()
                 .filter(IModule::isEnabled)
                 .filter(module -> Loader.isModLoaded(module.getDependencyModID()))
-                .peek(module -> ProjectX.LOGGER.info("Found mod {}, enabling compat module {}...", module.getDependencyModID(), module.getName()))
                 .map(IModule::getName)
                 .collect(Collectors.toList());
         MODULES.stream()
                 .filter(module -> ENABLED_MODULES.contains(module.getName()))
+                .peek(module -> ProjectX.LOGGER.info("Loading compat module {}...", module.getName()))
                 .forEach(module -> module.handlePreInit(event));
     }
 
