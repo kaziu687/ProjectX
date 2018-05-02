@@ -21,13 +21,21 @@ package de.kitsunealex.projectx.compat;
 import de.kitsunealex.projectx.compat.albedo.ModuleAlbedo;
 import de.kitsunealex.projectx.compat.thaumcraft.ModuleThaumcraft;
 import de.kitsunealex.projectx.compat.waila.ModuleWAILA;
+import de.kitsunealex.projectx.init.ModConfig;
 
 public class ModModules {
 
     public static void registerModules() {
-        ModuleHandler.INSTANCE.registerModule(new ModuleAlbedo());
-        ModuleHandler.INSTANCE.registerModule(new ModuleWAILA());
-        ModuleHandler.INSTANCE.registerModule(new ModuleThaumcraft());
-    }
+        if (ModConfig.COMPAT_ALBEDO) {
+            ModuleHandler.INSTANCE.registerModule(new ModuleAlbedo());
+        }
 
+        if (ModConfig.COMPAT_THAUMCRAFT) {
+            ModuleHandler.INSTANCE.registerModule(new ModuleThaumcraft());
+        }
+
+        if (ModConfig.COMPAT_WAILA) {
+            ModuleHandler.INSTANCE.registerModule(new ModuleWAILA());
+        }
+    }
 }
